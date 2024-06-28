@@ -201,7 +201,14 @@ elif choose == "STT":
 # 수정자 : 장지헌
 # 수정 내용 : 
 #####################################################################
-elif choose == "수어 도우미":
+# 버튼 상태를 초기화
+if 'end_camera' not in st.session_state:
+    st.session_state.end_camera = False
+
+def end_camera_feed():
+    st.session_state.end_camera = True
+
+if choose == "수어 도우미":
     col1, col2 = st.columns([2, 1])
 
     with col1:
@@ -214,6 +221,7 @@ elif choose == "수어 도우미":
         result_word = ''
         
         if st.button('수어 보여주기'):
+            st.session_state.end_camera = False  # 카메라 피드를 시작할 때 상태를 리셋합니다.
             fontpath = "fonts/HMKMMAG.TTF"
             font = ImageFont.truetype(fontpath, 40)
 
@@ -222,14 +230,14 @@ elif choose == "수어 도우미":
                         'ㅐ', 'ㅒ', 'ㅔ', 'ㅖ', 'ㅢ', 'ㅚ', 'ㅟ']
             seq_length = 10
 
-            # MediaPipe holistic model
+            # MediaPipe holistic 모델
             detector = hm.HolisticDetector(min_detection_confidence=0.3)
 
-            # Load TFLite model and allocate tensors.
+            # TFLite 모델을 로드하고 텐서를 할당합니다.
             interpreter = tf.lite.Interpreter(model_path="models/multi_hand_gesture_classifier.tflite")
             interpreter.allocate_tensors()
 
-            # Get input and output tensors.
+            # 입력 및 출력 텐서를 가져옵니다.
             input_details = interpreter.get_input_details()
             output_details = interpreter.get_output_details()
 
@@ -239,60 +247,38 @@ elif choose == "수어 도우미":
             action_seq = []
             last_action = None
 
-            # zamo_list=[]
             textArr = list()
+
+            # 카메라 피드를 종료하는 스트림릿 버튼
+            st.button('카메라 종료', on_click=end_camera_feed)
+
             while cap.isOpened():
                 ret, img = cap.read()
-                if not ret:
+                if not ret or st.session_state.end_camera:
                     break
 
                 img = detector.findHolistic(img, draw=True)
-                # _, left_hand_lmList = detector.findLefthandLandmark(img)
                 _, right_hand_lmList = detector.findRighthandLandmark(img)
 
-                # if left_hand_lmList is not None and right_hand_lmList is not None:
                 if right_hand_lmList is not None:
 
-                    joint = np.zeros((42, 2))
-                    # 왼손 랜드마크 리스트
-                    # for j, lm in enumerate(left_hand_lmList.landmark):
-                        # joint[j] = [lm.x, lm.y]
-                    
-                    # 오른손 랜드마크 리스트
+                    joint = np.zeros((21, 2))  # 오른손에 21개의 랜드마크가 있다고 가정합니다.
+
                     for j, lm in enumerate(right_hand_lmList.landmark):
-                        # joint[j+21] = [lm.x, lm.y]
                         joint[j] = [lm.x, lm.y]
 
-                    # 좌표 정규화
-                    # full_scale = Coordinate_Normalization(joint)
-
-                    # 벡터 정규화
                     vector, angle_label = Vector_Normalization(joint)
 
-                    # 위치 종속성을 가지는 데이터 저장
-                    # d = np.concatenate([joint.flatten(), angle_label])
-                
-                    # 벡터 정규화를 활용한 위치 종속성 제거
                     d = np.concatenate([vector.flatten(), angle_label.flatten()])
-
-                    # 정규화 좌표를 활용한 위치 종속성 제거 
-                    # d = np.concatenate([full_scale, angle_label.flatten()])
-                    
 
                     seq.append(d)
 
                     if len(seq) < seq_length:
                         continue
 
-                    # Test model on random input data.
-                    # input_shape = input_details[0]['shape']
-                    # input_data = np.array(np.random.random_sample(input_shape), dtype=np.float32)
-                    
-                    # 시퀀스 데이터와 넘파이화
                     input_data = np.expand_dims(np.array(seq[-seq_length:], dtype=np.float32), axis=0)
                     input_data = np.array(input_data, dtype=np.float32)
 
-                    # tflite 모델을 활용한 예측
                     interpreter.set_tensor(input_details[0]['index'], input_data)
                     interpreter.invoke()
 
@@ -316,26 +302,25 @@ elif choose == "수어 도우미":
                         if last_action != this_action:
                             last_action = this_action
                     
-                    # 한글 폰트 출력    
                     img_pil = Image.fromarray(img)
                     draw = ImageDraw.Draw(img_pil)
 
                     draw.text((10, 30), f'{action.upper()}', font=font, fill=(255, 255, 255))
                     draw.text((10, 70), f'{result_word}', font=font, fill=(255, 255, 255))
                     img = np.array(img_pil)
-                    
-                    #분류된 글자 출력 : this_action
+
                     if this_action != '?':
                         add_unique_element(textArr, this_action)
                     result_word = jamo_trans(textArr)
                     print(result_word)
-                    
-                    # cv2.putText(img, f'{this_action.upper()}', org=(int(right_hand_lmList.landmark[0].x * img.shape[1]), int(right_hand_lmList.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
-
 
                 cv2.imshow('img', img)
                 if cv2.waitKey(70) & 0xFF == 27:
+                    st.session_state.end_camera = True
                     break
+
+            cap.release()
+            cv2.destroyAllWindows()
 #####################################################################
 
 
