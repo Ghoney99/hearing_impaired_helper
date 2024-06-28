@@ -27,6 +27,11 @@ import cv2 # 라이브러리 설치
 import mediapipe as mp # 라이브러리 설치
 import numpy as np
 
+# 실행 코드
+# streamlit run  test.py
+
+
+# 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
 
 #####################################################################
