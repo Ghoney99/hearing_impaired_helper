@@ -15,6 +15,7 @@ from unicode import join_jamos
 
 result_word = ''
 
+
 # 자모음 병합
 def jamo_trans(jamo):
 
