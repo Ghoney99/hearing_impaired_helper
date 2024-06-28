@@ -213,7 +213,7 @@ elif choose == "수어 도우미":
         
         result_word = ''
         
-        if st.button('데이터 보기'):
+        if st.button('수어 보여주기'):
             fontpath = "fonts/HMKMMAG.TTF"
             font = ImageFont.truetype(fontpath, 40)
 
