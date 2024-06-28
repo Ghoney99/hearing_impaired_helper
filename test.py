@@ -205,10 +205,10 @@ elif choose == "수어 단어장":
                 description = result['description']
                 image_object = result['image_object']
                 
-                st.text(title)
-                st.text(sub_description)
-                st.text(description)
-                st.text(image_object)
-        
+            # 카드 형태로 UI 구성하기
+            with st.expander(title):
+                st.image(image_object)  # 이미지를 표시하려면 이미지 경로나 이미지 자체를 전달합니다
+                st.markdown(f"설명 : {description}")
+                st.markdown(f"[{title}]({sub_description})")
 #####################################################################
 
