@@ -24,6 +24,7 @@ st.set_page_config(layout="wide")
 # 수정 날짜 : 2024-06-28
 # 작성자 : 장지헌
 # 수정자 : 장지헌
+# 수정 내용 : 
 #####################################################################
 def parse_response(response_text):
     root = ET.fromstring(response_text)
