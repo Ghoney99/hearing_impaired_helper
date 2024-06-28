@@ -12,19 +12,19 @@ import matplotlib.pyplot as plt
 from openai import OpenAI
 
 # 수어 단어장 라이브러리
-import requests
-from urllib.parse import urlencode
-import xml.etree.ElementTree as ET
+import requests # 라이브러리 설치
+from urllib.parse import urlencode  # 라이브러리 설치
+import xml.etree.ElementTree as ET # 라이브러리 설치
 
 # 수어 인식 모델 라이브러리
 from Sign_Language_Translation.modules.utils import Vector_Normalization
-from PIL import ImageFont, ImageDraw, Image
+from PIL import ImageFont, ImageDraw, Image # 라이브러리 설치
 from Sign_Language_Translation.unicode import join_jamos
 import tensorflow as tf
 import Sign_Language_Translation.modules.holistic_module as hm
-from tensorflow.keras.models import load_model
-import cv2
-import mediapipe as mp
+from tensorflow.keras.models import load_model # 라이브러리 설치
+import cv2 # 라이브러리 설치
+import mediapipe as mp # 라이브러리 설치
 import numpy as np
 
 plt.rcParams['font.family'] ='Malgun Gothic'
