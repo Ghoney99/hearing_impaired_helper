@@ -10,13 +10,106 @@ from tkinter.tix import COLUMN
 from pyparsing import empty
 import matplotlib.pyplot as plt
 from openai import OpenAI
+
+# 수어 단어장 라이브러리
+import requests
+from urllib.parse import urlencode
+import xml.etree.ElementTree as ET
+
+# 수어 인식 모델 라이브러리
+from Sign_Language_Translation.modules.utils import Vector_Normalization
+from PIL import ImageFont, ImageDraw, Image
+from Sign_Language_Translation.unicode import join_jamos
+import tensorflow as tf
+import Sign_Language_Translation.modules.holistic_module as hm
+from tensorflow.keras.models import load_model
+import cv2
+import mediapipe as mp
+import numpy as np
+
 plt.rcParams['font.family'] ='Malgun Gothic'
+
+#####################################################################
+# 제목 : 함수 모음
+# 수정 날짜 : 2024-06-28
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 함수 추가
+#####################################################################
+
+# 수어 단어장 -> API 불러오기
+def parse_response(response_text):
+    root = ET.fromstring(response_text)
+    
+    items = root.findall('.//item')
+    
+    results = []
+    for item in items:
+        title = item.find('title').text
+        sub_description = item.find('subDescription').text if item.find('subDescription') is not None else ''
+        description = item.find('description').text if item.find('description') is not None else ''
+        image_object = item.find('imageObject').text if item.find('imageObject') is not None else ''
+        
+        results.append({
+            'title': title,
+            'sub_description': sub_description,
+            'description': description,
+            'image_object': image_object
+        })
+    
+    return results
+
+# 수어 단어장 -> API 처리 
+def get_video(keyword):
+    base_url = "http://api.kcisa.kr/API_CNV_054/request"
+    params = {
+        "serviceKey": "d8fb6910-dfc1-47ca-bb0a-16924ea0e629",
+        "numOfRows": "5",
+        "pageNo": "1",
+        "keyword": keyword
+    }
+    
+    url = f"{base_url}?{urlencode(params)}"
+    
+    headers = {
+        "Content-type": "application/json"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    print(f"Response code: {response.status_code}")
+    
+    if 200 <= response.status_code <= 300:
+        return parse_response(response.text)
+    else:
+        print("Error:", response.text)
+        return None
+    
+# 수어 인식 -> 자모음 병합
+def jamo_trans(jamo):
+
+    chars = list(set(jamo))
+    char_to_ix = { ch:i for i,ch in enumerate(chars) }
+    ix_to_char = { i:ch for i,ch in enumerate(chars) }
+
+    jamo_numbers = [char_to_ix[x] for x in jamo]
+
+    restored_jamo = ''.join([ix_to_char[x] for x in jamo_numbers])
+    restored_text = join_jamos(restored_jamo)
+    return restored_text
+
+# 수어 인식 -> 리스트 추가 함수
+def add_unique_element(lst, element):
+    if not lst or lst[-1] != element:
+        lst.append(element)
+    return lst
+#####################################################################
 
 
 st.set_page_config(layout="wide")
 
 with st.sidebar:
-    choose = option_menu("AI 디지털 교과서", ["STT", "수어 도우미", "AI Tutor",'성적 확인'],
+    choose = option_menu("AI 디지털 교과서", ["STT", "수어 도우미", "AI Tutor",'성적 확인', '수어 단어장'],
                          icons=['house', 'camera fill', 'kanban'],
                          menu_icon="app-indicator", default_index=0,
                          styles={
@@ -27,6 +120,13 @@ with st.sidebar:
     }
     )
 
+#####################################################################
+# 제목 : Ai 튜터
+# 수정 날짜 : 2024-06-28
+# 작성자 : 장재혁
+# 수정자 : 장재혁
+# 수정 내용 : 파인튜닝
+#####################################################################
 if choose == "AI Tutor":
     col1, col2 = st.columns([2, 1])
     
@@ -67,6 +167,13 @@ if choose == "AI Tutor":
             st.session_state.messages.append({"role": "assistant", "content": response})
         
 
+#####################################################################
+# 제목 : STT
+# 수정 날짜 : 2024-06-28
+# 작성자 : 장재혁
+# 수정자 : 
+# 수정 내용 : 
+#####################################################################
 elif choose == "STT":
     col1, col2 = st.columns([2, 1])
 
@@ -86,7 +193,15 @@ elif choose == "수어 도우미":
     with col2:
         st.title("수어 도우미 (Sign Language Helper) App")
         st.write("수어 도우미 관련 콘텐츠")
-        
+
+
+#####################################################################
+# 제목 : 성적확인
+# 수정 날짜 : 2024-06-28
+# 작성자 : 장재혁
+# 수정자 : 장재혁
+# 수정 내용 : 성적확인 차트
+#####################################################################
 elif choose == "성적 확인":
     # 데이터셋 로드
     df = pd.read_csv('student_scores_korean_subjects.csv')
@@ -137,3 +252,36 @@ elif choose == "성적 확인":
             compare_student_with_average(df, student_id)
         else:
             st.write("해당 이름의 학생을 찾을 수 없습니다.")
+            
+            
+#####################################################################
+# 제목 : 수어 단어장
+# 수정 날짜 : 2024-06-28
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 수어 단어장 추가
+#####################################################################
+elif choose == "수어 단어장":
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.image("20240627_214541.png", caption="국어", use_column_width=True)
+
+    with col2:
+        st.title("수어 단어장 (Sign Language Helper) App")
+        text = st.text_input("단어를 입력하세요!")
+        results = get_video(text)
+        
+        if results:
+            for result in results:
+                title = result['title']
+                sub_description = result['sub_description']
+                description = result['description']
+                image_object = result['image_object']
+                
+            # 카드 형태로 UI 구성하기
+            with st.expander(title):
+                st.image(image_object)  # 이미지를 표시하려면 이미지 경로나 이미지 자체를 전달합니다
+                st.markdown(f"설명 : {description}")
+                st.markdown(f"[{title}]({sub_description})")
+#####################################################################
