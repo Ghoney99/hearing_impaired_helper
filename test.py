@@ -9,6 +9,10 @@ import io
 from tkinter.tix import COLUMN
 from pyparsing import empty
 from openai import OpenAI
+import requests
+from urllib.parse import urlencode
+import xml.etree.ElementTree as ET
+
 
 # 터미널 창에 입력해서 실행
 # streamlit run test.py
@@ -16,6 +20,60 @@ from openai import OpenAI
 st.set_page_config(layout="wide")
 
 #####################################################################
+# 제목 : 함수 모음
+# 수정 날짜 : 2024-06-28
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+#####################################################################
+def parse_response(response_text):
+    root = ET.fromstring(response_text)
+    
+    items = root.findall('.//item')
+    
+    results = []
+    for item in items:
+        title = item.find('title').text
+        sub_description = item.find('subDescription').text if item.find('subDescription') is not None else ''
+        description = item.find('description').text if item.find('description') is not None else ''
+        image_object = item.find('imageObject').text if item.find('imageObject') is not None else ''
+        
+        results.append({
+            'title': title,
+            'sub_description': sub_description,
+            'description': description,
+            'image_object': image_object
+        })
+    
+    return results
+
+def get_video(keyword):
+    base_url = "http://api.kcisa.kr/API_CNV_054/request"
+    params = {
+        "serviceKey": "d8fb6910-dfc1-47ca-bb0a-16924ea0e629",
+        "numOfRows": "5",
+        "pageNo": "1",
+        "keyword": keyword
+    }
+    
+    url = f"{base_url}?{urlencode(params)}"
+    
+    headers = {
+        "Content-type": "application/json"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    print(f"Response code: {response.status_code}")
+    
+    if 200 <= response.status_code <= 300:
+        return parse_response(response.text)
+    else:
+        print("Error:", response.text)
+        return None
+#####################################################################
+
+#####################################################################
+# 제목 : Title
 # 수정 날짜 : 2024-06-28
 # 작성자 : 장재혁
 # 수정자 : 장지헌
@@ -37,6 +95,7 @@ with st.sidebar:
 
 
 #####################################################################
+# 제목 : Ai Tutor
 # 수정 날짜 : 2024-06-28
 # 작성자 : 장재혁
 # 수정자 : 장지헌
@@ -83,6 +142,7 @@ if choose == "AI Tutor":
 
 
 #####################################################################
+# 제목 : STT
 # 수정 날짜 : 2024-06-28
 # 작성자 : 장재혁
 # 수정자 : 장재혁
@@ -101,6 +161,7 @@ elif choose == "STT":
 
 
 #####################################################################
+# 제목 : 수어 도우미
 # 수정 날짜 : 2024-06-28
 # 작성자 : 장지헌
 # 수정자 : 장지헌
@@ -119,6 +180,7 @@ elif choose == "수어 도우미":
 
 
 #####################################################################
+# 제목 : 수어 단어장
 # 수정 날짜 : 2024-06-28
 # 작성자 : 장지헌
 # 수정자 : 장지헌
@@ -132,5 +194,20 @@ elif choose == "수어 단어장":
 
     with col2:
         st.title("수어 단어장 (Sign Language Helper) App")
-        st.write("수어 단어장")
+        text = st.text_input("단어를 입력하세요!")
+        results = get_video(text)
+        
+        if results:
+            for result in results:
+                title = result['title']
+                sub_description = result['sub_description']
+                description = result['description']
+                image_object = result['image_object']
+                
+                st.text(title)
+                st.text(sub_description)
+                st.text(description)
+                st.text(image_object)
+        
 #####################################################################
+

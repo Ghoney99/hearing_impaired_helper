@@ -49,7 +49,7 @@ def get_video(keyword):
         return None
 
 # 입력
-text = '죽다'
+text = '감자'
 
 # 출력
 results = get_video(text)

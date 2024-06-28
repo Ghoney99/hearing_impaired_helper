@@ -13,6 +13,8 @@ from PIL import ImageFont, ImageDraw, Image
 # from hangul_utils import join_jamos
 from unicode import join_jamos
 
+result_word = ''
+
 # 자모음 병합
 def jamo_trans(jamo):
 
@@ -152,7 +154,7 @@ while cap.isOpened():
                   fill=(255, 255, 255))
         '''
         draw.text((10, 30), f'{action.upper()}', font=font, fill=(255, 255, 255))
-
+        draw.text((10, 70), f'{result_word}', font=font, fill=(255, 255, 255))
         img = np.array(img_pil)
         
         #분류된 글자 출력 : this_action
@@ -165,6 +167,6 @@ while cap.isOpened():
 
 
     cv2.imshow('img', img)
-    if cv2.waitKey(1) & 0xFF == 27:
+    if cv2.waitKey(70) & 0xFF == 27:
         break
 
