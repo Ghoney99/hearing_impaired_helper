@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 from openai import OpenAI
 plt.rcParams['font.family'] ='Malgun Gothic'
 
+
+## 지헌 테스트
 st.set_page_config(layout="wide")
 
 with st.sidebar:
