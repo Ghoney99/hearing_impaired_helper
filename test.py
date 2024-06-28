@@ -13,6 +13,17 @@ import requests
 from urllib.parse import urlencode
 import xml.etree.ElementTree as ET
 
+import sys
+import cv2
+import mediapipe as mp
+import numpy as np
+import tensorflow as tf
+import Sign_Language_Translation.modules.holistic_module as hm
+from tensorflow.keras.models import load_model
+import math
+from Sign_Language_Translation.modules.utils import Vector_Normalization
+from PIL import ImageFont, ImageDraw, Image
+from Sign_Language_Translation.unicode import join_jamos
 
 # 터미널 창에 입력해서 실행
 # streamlit run test.py
@@ -26,6 +37,8 @@ st.set_page_config(layout="wide")
 # 수정자 : 장지헌
 # 수정 내용 : 
 #####################################################################
+
+# 수어 단어장 -> API 불러오기
 def parse_response(response_text):
     root = ET.fromstring(response_text)
     
@@ -47,6 +60,7 @@ def parse_response(response_text):
     
     return results
 
+# 수어 단어장 -> API 처리 
 def get_video(keyword):
     base_url = "http://api.kcisa.kr/API_CNV_054/request"
     params = {
@@ -71,6 +85,25 @@ def get_video(keyword):
     else:
         print("Error:", response.text)
         return None
+    
+# 수어 인식 -> 자모음 병합
+def jamo_trans(jamo):
+
+    chars = list(set(jamo))
+    char_to_ix = { ch:i for i,ch in enumerate(chars) }
+    ix_to_char = { i:ch for i,ch in enumerate(chars) }
+
+    jamo_numbers = [char_to_ix[x] for x in jamo]
+
+    restored_jamo = ''.join([ix_to_char[x] for x in jamo_numbers])
+    restored_text = join_jamos(restored_jamo)
+    return restored_text
+
+# 수어 인식 -> 리스트 추가 함수
+def add_unique_element(lst, element):
+    if not lst or lst[-1] != element:
+        lst.append(element)
+    return lst
 #####################################################################
 
 #####################################################################
@@ -177,6 +210,11 @@ elif choose == "수어 도우미":
     with col2:
         st.title("수어 도우미 (Sign Language Helper) App")
         st.write("수어 도우미 관련 콘텐츠")
+        
+        st.button('버튼')
+        # 조건부와 같이 사용할 수 있다.
+        if st.button('데이터 보기'):
+            st.text('ㅅㄷㅌㅅ')
 #####################################################################
 
 
