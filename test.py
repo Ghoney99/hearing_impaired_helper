@@ -315,24 +315,11 @@ elif choose == "수어 도우미":
 
                         if last_action != this_action:
                             last_action = this_action
-                    '''
-                    # 기록된 한글 파악
-                    if zamo_list[-1] != this_action: # 만약 전에 기록된 글자와 이번 글자가 다르다면
-                        zamo_list.append(this_action)
-                    
-                    zamo_str = ''.join(zamo_list) # 리스트에 있는 단어 합침
-                    unitl_action = join_jamos(zamo_str) # 합친 단어 한글로 만들기
-                    '''
                     
                     # 한글 폰트 출력    
                     img_pil = Image.fromarray(img)
                     draw = ImageDraw.Draw(img_pil)
-                    '''
-                    draw.text((int(right_hand_lmList.landmark[0].x * img.shape[1]), int(right_hand_lmList.landmark[0].y * img.shape[0] + 20)),
-                            f'{this_action.upper()}', 
-                            font=font, 
-                            fill=(255, 255, 255))
-                    '''
+
                     draw.text((10, 30), f'{action.upper()}', font=font, fill=(255, 255, 255))
                     draw.text((10, 70), f'{result_word}', font=font, fill=(255, 255, 255))
                     img = np.array(img_pil)
