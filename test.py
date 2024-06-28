@@ -30,6 +30,8 @@ from Sign_Language_Translation.unicode import join_jamos
 
 st.set_page_config(layout="wide")
 
+#테스트
+
 #####################################################################
 # 제목 : 함수 모음
 # 수정 날짜 : 2024-06-28
