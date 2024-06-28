@@ -9,12 +9,10 @@ import io
 from tkinter.tix import COLUMN
 from pyparsing import empty
 import matplotlib.pyplot as plt
-## 1111
 from openai import OpenAI
 plt.rcParams['font.family'] ='Malgun Gothic'
 
 
-## 지헌 테스트
 st.set_page_config(layout="wide")
 
 with st.sidebar:
