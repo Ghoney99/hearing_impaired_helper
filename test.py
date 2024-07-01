@@ -26,9 +26,10 @@ from tensorflow.keras.models import load_model # 라이브러리 설치
 import cv2 # 라이브러리 설치
 import mediapipe as mp # 라이브러리 설치
 import numpy as np
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase # 라이브러리 설치
 
 # 실행 코드
-# streamlit run  test.py
+# streamlit run test.py
 
 
 # 글꼴 설정
@@ -107,6 +108,9 @@ def add_unique_element(lst, element):
     if not lst or lst[-1] != element:
         lst.append(element)
     return lst
+
+# 수어 인식 -> result 값
+result_word = ''
 #####################################################################
 
 
@@ -202,7 +206,15 @@ elif choose == "STT":
     with col2:
         st.title("Speech-to-Text (STT) App")
         st.write("STT 관련 콘텐츠")
-    
+
+
+#####################################################################
+# 제목 : 수어 도우미
+# 수정 날짜 : 2024-07-01
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 수어 인식 모델 브라우저에서 띄우기
+#####################################################################
 elif choose == "수어 도우미":
     col1, col2 = st.columns([2, 1])
 
@@ -212,6 +224,30 @@ elif choose == "수어 도우미":
     with col2:
         st.title("수어 도우미 (Sign Language Helper) App")
         st.write("수어 도우미 관련 콘텐츠")
+        
+        # Initialize variables and models outside of the button click event to avoid reinitializing them
+        fontpath = "fonts/HMKMMAG.TTF"
+        font = ImageFont.truetype(fontpath, 40)
+
+        actions = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ',
+                'ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ',
+                'ㅐ', 'ㅒ', 'ㅔ', 'ㅖ', 'ㅢ', 'ㅚ', 'ㅟ']
+        seq_length = 10
+
+        # MediaPipe holistic model
+        detector = hm.HolisticDetector(min_detection_confidence=0.3)
+
+        # Load TFLite model and allocate tensors.
+        interpreter = tf.lite.Interpreter(model_path="models/multi_hand_gesture_classifier.tflite")
+        interpreter.allocate_tensors()
+
+        # Get input and output tensors.
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
+        
+        
+
+
 #####################################################################
 
 
