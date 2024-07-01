@@ -9,9 +9,11 @@ import io
 from tkinter.tix import COLUMN
 from pyparsing import empty
 import matplotlib.pyplot as plt
-from openai import OpenAI
-import sub_page
 
+# 파일불러오기
+import sub_page, ai_chatbot
+
+# 페이지 전환
 from utils import get_session_state
 
 # 글꼴 설정
@@ -49,7 +51,7 @@ def compare_student_with_average(df, student_id):
         st.pyplot(fig)
 
 
-def main():
+def main(name):
     # 세션 상태 가져오기
     session_state = get_session_state(sub_page=False)
     if not session_state.sub_page:
@@ -71,48 +73,17 @@ def main():
             col1, col2 = st.columns([2, 1])
             
             with col1:
-                st.title("최수아")
+                st.title(name)
                 st.write("성적 확인")
                 df = pd.read_csv('student_scores_korean_subjects.csv')
-                for col in ['국어_중간고사', '국어_기말고사', '수학_중간고사', '수학_기말고사', '영어_중간고사', '영어_기말고사', '과학_중간고사', '과학_기말고사']:
-                    df[col] = pd.to_numeric(df[col], errors='coerce')
-
+                
                 # 학생 이름과 ID를 매핑
                 student_name_to_id = {row['이름']: row['학생ID'] for _, row in df.iterrows()}
                 student_id = student_name_to_id['최수아']
                 compare_student_with_average(df, student_id)
 
             with col2:
-                st.title("AI 튜터")
-
-                client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
-                if "openai_model" not in st.session_state:
-                    st.session_state["openai_model"] = "ft:gpt-3.5-turbo-0125:personal::9evZE1BR"
-
-                if "messages" not in st.session_state:
-                    st.session_state.messages = []
-
-                for message in st.session_state.messages:
-                    with st.chat_message(message["role"]):
-                        st.markdown(message["content"])
-
-                if prompt := st.chat_input("What is up?"):
-                    st.session_state.messages.append({"role": "user", "content": prompt})
-                    with st.chat_message("user"):
-                        st.markdown(prompt)
-
-                    with st.chat_message("assistant"):
-                        stream = client.chat.completions.create(
-                            model=st.session_state["openai_model"],
-                            messages=[
-                                {"role": m["role"], "content": m["content"]}
-                                for m in st.session_state.messages
-                            ],
-                            stream=True,
-                        )
-                        response = st.write_stream(stream)
-                    st.session_state.messages.append({"role": "assistant", "content": response})
+                ai_chatbot.main()
         
         
         if choose == "교과서":   
