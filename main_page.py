@@ -14,8 +14,6 @@ import sub_page
 
 from utils import get_session_state
 
-# 세션 상태 가져오기
-session_state = get_session_state(sub_page=False)
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
 
@@ -52,10 +50,9 @@ def compare_student_with_average(df, student_id):
 
 
 def main():
-    if session_state.sub_page:
-        sub_page.main()
-    else:
-        
+    # 세션 상태 가져오기
+    session_state = get_session_state(sub_page=False)
+    if not session_state.sub_page:
     
         st.set_page_config(layout="wide")
 
@@ -144,3 +141,5 @@ def main():
                 st.text("영어")
                 if st.button("영어"):
                     st.write("영어 버튼을 눌렀습니다.")
+    else:
+        sub_page.main()
