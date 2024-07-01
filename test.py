@@ -23,7 +23,7 @@ from Sign_Language_Translation.unicode import join_jamos
 import tensorflow as tf
 import Sign_Language_Translation.modules.holistic_module as hm
 from tensorflow.keras.models import load_model
-import cv2s
+import cv2
 import mediapipe as mp
 import numpy as np
 
