@@ -1,13 +1,17 @@
-from Sign_Language_Translation.modules.utils import Vector_Normalization
-from PIL import ImageFont, ImageDraw, Image # 라이브러리 설치
-from Sign_Language_Translation.unicode import join_jamos
-import tensorflow as tf
-import Sign_Language_Translation.modules.holistic_module as hm
-from tensorflow.keras.models import load_model # 라이브러리 설치
-import cv2 # 라이브러리 설치
-import mediapipe as mp # 라이브러리 설치
+import sys
+# sys.path.append('pingpong')
+# from pingpong.pingpongthread import PingPongThread
+import cv2
+import mediapipe as mp
 import numpy as np
-
+import tensorflow as tf
+import modules.holistic_module as hm
+from tensorflow.keras.models import load_model
+import math
+from modules.utils import Vector_Normalization
+from PIL import ImageFont, ImageDraw, Image
+# from hangul_utils import join_jamos
+from unicode import join_jamos
 
 result_word = ''
 

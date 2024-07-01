@@ -12,20 +12,22 @@ import matplotlib.pyplot as plt
 from openai import OpenAI
 
 # 수어 단어장 라이브러리
-import requests # 라이브러리 설치
-from urllib.parse import urlencode  # 라이브러리 설치
-import xml.etree.ElementTree as ET # 라이브러리 설치
+import requests
+from urllib.parse import urlencode
+import xml.etree.ElementTree as ET
 
 # 수어 인식 모델 라이브러리
 from Sign_Language_Translation.modules.utils import Vector_Normalization
-from PIL import ImageFont, ImageDraw, Image # 라이브러리 설치
+from PIL import ImageFont, ImageDraw, Image
 from Sign_Language_Translation.unicode import join_jamos
 import tensorflow as tf
 import Sign_Language_Translation.modules.holistic_module as hm
-from tensorflow.keras.models import load_model # 라이브러리 설치
-import cv2 # 라이브러리 설치
-import mediapipe as mp # 라이브러리 설치
+from tensorflow.keras.models import load_model
+import cv2
+import mediapipe as mp
 import numpy as np
+import speech_recognition as sr # 라이브러리 설치
+
 
 # 실행 코드
 # streamlit run test.py
@@ -192,9 +194,9 @@ if choose == "AI Tutor":
 #####################################################################
 # 제목 : STT
 # 수정 날짜 : 2024-06-28
-# 작성자 : 장재혁
-# 수정자 : 
-# 수정 내용 : 
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : stt 기능 러프하게 추가
 #####################################################################
 elif choose == "STT":
     col1, col2 = st.columns([2, 1])
