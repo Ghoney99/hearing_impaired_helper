@@ -223,6 +223,7 @@ elif choose == "수어 도우미":
     with col2:
         st.title("수어 도우미 (Sign Language Helper) App")
         st.write("수어 도우미 관련 콘텐츠")
+        
         fontpath = "fonts/HMKMMAG.TTF"
         font = ImageFont.truetype(fontpath, 40)
         textArr = list()
@@ -238,19 +239,21 @@ elif choose == "수어 도우미":
         # 스트림릿 앱 레이아웃 및 버튼 생성
         st.title('Gesture Recognition with Streamlit')
 
+        # 카메라 캡처 객체와 관련 변수 초기화
+        cap = None
+        seq = []
+        action_seq = []
+        last_action = None
+        detector = hm.HolisticDetector(min_detection_confidence=0.3)
+
+        # 'Run Gesture Recognition' 버튼 클릭 시 동작
         if st.button('Run Gesture Recognition'):
             result_word = ''
 
-            # 캡처 및 처리 코드
+            # 카메라 캡처 시작
             cap = cv2.VideoCapture(0)
 
-            seq = []
-            action_seq = []
-            last_action = None
-
-            detector = hm.HolisticDetector(min_detection_confidence=0.3)
-
-            while cap.isOpened():
+            while cap and cap.isOpened():
                 ret, img = cap.read()
                 if not ret:
                     break
@@ -312,9 +315,14 @@ elif choose == "수어 도우미":
                     result_word = jamo_trans(textArr)
 
                 cv2.imshow('img', img)
-                if cv2.waitKey(70) & 0xFF == 27:
+                key = cv2.waitKey(70) & 0xFF
+                if key == 27:  # 'esc' 키를 누르면
                     break
 
+        # 카메라와 윈도우를 정리
+        if cap:
+            cap.release()
+        cv2.destroyAllWindows()
 
 
 #####################################################################
