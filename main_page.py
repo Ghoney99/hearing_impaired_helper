@@ -88,13 +88,14 @@ def radar_plot(file_path, student_name):
         ax.set_theta_direction(-1)
         ax.set_rlim(0, 100)
         ax.set_thetagrids(np.arange(0, 360, 360 / len(subjects)), subjects)
-        ax.plot(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, 'bo-')
+        ax.plot(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, 'o', color='blue', alpha=0.7)
         ax.fill(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, alpha=0.2)
         ax.set_title(f"{student_name} 학생의 {selected_grade}학년 {selected_semester}학기 성적")
 
         st.pyplot(fig)
     else:
         st.write("해당 학년 및 학기의 데이터가 없습니다.")
+
 
 def main(name):
     # 세션 상태 가져오기
