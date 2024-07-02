@@ -19,71 +19,83 @@ from utils import get_session_state
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
 
-def compare_student_with_average(df, student_id):
-        student_data = df[df['학생ID'] == student_id]
-
-        df['전체_평균_국어'] = df[['국어_중간고사', '국어_기말고사']].mean(axis=1)
-        df['전체_평균_수학'] = df[['수학_중간고사', '수학_기말고사']].mean(axis=1)
-        df['전체_평균_영어'] = df[['영어_중간고사', '영어_기말고사']].mean(axis=1)
-        df['전체_평균_과학'] = df[['과학_중간고사', '과학_기말고사']].mean(axis=1)
-
-        semester_avg = df.groupby('학기').mean(numeric_only=True).reset_index()
-
-        student_data['학생_평균_국어'] = student_data[['국어_중간고사', '국어_기말고사']].mean(axis=1)
-        student_data['학생_평균_수학'] = student_data[['수학_중간고사', '수학_기말고사']].mean(axis=1)
-        student_data['학생_평균_영어'] = student_data[['영어_중간고사', '영어_기말고사']].mean(axis=1)
-        student_data['학생_평균_과학'] = student_data[['과학_중간고사', '과학_기말고사']].mean(axis=1)
-
-        student_avg = student_data.groupby('학기').mean(numeric_only=True).reset_index()
-
-        fig, axs = plt.subplots(2, 2, figsize=(14, 10))
-        subjects = ['국어', '수학', '영어', '과학']
-        for i, subject in enumerate(subjects):
-            ax = axs[i // 2, i % 2]
-            ax.plot(semester_avg['학기'], semester_avg[f'전체_평균_{subject}'], label='전체 평균', marker='o')
-            ax.plot(student_avg['학기'], student_avg[f'학생_평균_{subject}'], label='학생 평균', marker='o')
-            ax.set_title(f'{subject} 성적 비교')
-            ax.set_xlabel('학기')
-            ax.set_ylabel('평균 성적')
-            ax.legend()
-
-        plt.tight_layout()
-        st.pyplot(fig)
-
-def score_plot(file_path):
+def score_plot(file_path, s_name):
     st.title('학년별 성적 조회')
 
-    # 데이터 로드
     df = pd.read_csv(file_path)
-
-    # 학생 이름 선택
-    student_name = '최수아'
-
-    # 선택한 학생 데이터 필터링
-    filtered_data = df[df['Name'] == student_name]
+    student_name = s_name
 
     # 학년 선택
     grade = st.slider('학년 선택:', min_value=1, max_value=6, value=(1, 6))
 
     # 선택된 데이터 필터링
-    filtered_data = filtered_data[(filtered_data['Grade'].between(grade[0], grade[1]))]
+    filtered_data = df[(df['Name'] == student_name) & (df['Grade'].between(grade[0], grade[1]))]
 
     # 과목 체크박스 생성 (국어 기본 선택)
     default_subjects = ['국어']
     subjects = st.multiselect('과목 선택:', filtered_data['Subject'].unique(), default=default_subjects)
 
+    # 전체 학생 데이터 로드
+    all_students_data = df[df['Grade'].between(grade[0], grade[1])]
+
     # 그래프 그리기
     if not filtered_data.empty:
         plt.figure(figsize=(10, 6))
+
+        # 각 과목의 선택된 학생 데이터 그리기
         for subject in subjects:
             subject_data = filtered_data[filtered_data['Subject'] == subject]
-            plt.plot(subject_data['Total_Semester'], subject_data['Score'], marker='o', label=subject)
+            plt.plot(subject_data['Total_Semester'], subject_data['Score'], marker='o', label=f'{student_name} - {subject}')
+
+        # 전체 학생의 각 과목 평균 성적 계산 및 그리기
+        for subject in subjects:
+            subject_data_all = all_students_data[all_students_data['Subject'] == subject]
+            avg_scores = subject_data_all.groupby('Total_Semester')['Score'].mean()
+            plt.plot(avg_scores.index, avg_scores.values, linestyle='--', label=f'{subject} 전체 평균')
+
         plt.xlabel('학기')
         plt.ylabel('성적')
         plt.title(f'{student_name}학생의 {grade[0]} ~ {grade[1]} 학년 성적')
         plt.legend()
         st.pyplot(plt)
         
+
+def radar_plot(file_path, student_name):
+    # 데이터 읽기
+    df = pd.read_csv(file_path)
+
+    # 학생 데이터 필터링
+    student_data = df[df['Name'] == student_name]
+
+    # 학년 및 학기 선택 옵션 생성
+    unique_grades = student_data['Grade'].unique()
+    unique_semesters = student_data['Semester'].unique()
+
+    # 학년 및 학기 선택
+    selected_grade = st.selectbox(f"{student_name} 학생의 학년", unique_grades)
+    selected_semester = st.selectbox(f"{selected_grade}학년 학기", unique_semesters)
+
+    # 선택한 학년 및 학기의 데이터 필터링
+    filtered_data = student_data[(student_data['Grade'] == selected_grade) & (student_data['Semester'] == selected_semester)]
+
+    # 방사형 그래프 생성
+    if not filtered_data.empty:
+        subjects = filtered_data['Subject'].unique()
+        scores = [filtered_data[filtered_data['Subject'] == subject]['Score'].values[0] for subject in subjects]
+
+        fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={'projection': 'polar'})
+        ax.set_theta_zero_location("N")
+        ax.set_theta_direction(-1)
+        ax.set_rlim(0, 100)
+        ax.set_thetagrids(np.arange(0, 360, 360 / len(subjects)), subjects)
+        ax.plot(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, 'bo-')
+        ax.fill(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, alpha=0.2)
+        ax.set_title(f"{student_name} 학생의 {selected_grade}학년 {selected_semester}학기 성적")
+
+        st.pyplot(fig)
+    else:
+        st.write("해당 학년 및 학기의 데이터가 없습니다.")
+
 def main(name):
     # 세션 상태 가져오기
     session_state = get_session_state(sub_page=False)
@@ -108,13 +120,8 @@ def main(name):
             with col1:
                 st.title(name)
                 st.write("성적 확인")
-                df = pd.read_csv('student_scores_korean_subjects.csv')
-                
-                # 학생 이름과 ID를 매핑
-                student_name_to_id = {row['이름']: row['학생ID'] for _, row in df.iterrows()}
-                student_id = student_name_to_id['최수아']
-                compare_student_with_average(df, student_id)
-                score_plot('student_data.csv')
+                score_plot('student_data.csv', '최수아')
+                radar_plot('student_data.csv', '최수아')
 
             with col2:
                 ai_chatbot.main()

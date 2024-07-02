@@ -1,47 +1,46 @@
-import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import numpy as np
 import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
 
-# CSV 파일 경로
-file_path = 'student_data.csv'
-
-# Streamlit 애플리케이션 설정
-def score_plot():
-    st.title('학년별 성적 조회')
-
-    # 데이터 로드
+def plot_radar_chart(file_path, student_name):
+    # 데이터 읽기
     df = pd.read_csv(file_path)
 
-    # 학생 이름 선택
-    student_name = '최수아'
+    # 학생 데이터 필터링
+    student_data = df[df['Name'] == student_name]
 
-    # 선택한 학생 데이터 필터링
-    filtered_data = df[df['Name'] == student_name]
+    # 학년 및 학기 선택 옵션 생성
+    unique_grades = student_data['Grade'].unique()
+    unique_semesters = student_data['Semester'].unique()
 
-    # 학년 선택
-    grade = st.slider('학년 선택:', min_value=1, max_value=6, value=(1, 6))
+    # 학년 및 학기 선택
+    selected_grade = st.selectbox(f"{student_name} 학생의 학년", unique_grades)
+    selected_semester = st.selectbox(f"{selected_grade}학년 학기", unique_semesters)
 
-    # 선택된 데이터 필터링
-    filtered_data = filtered_data[(filtered_data['Grade'].between(grade[0], grade[1]))]
+    # 선택한 학년 및 학기의 데이터 필터링
+    filtered_data = student_data[(student_data['Grade'] == selected_grade) & (student_data['Semester'] == selected_semester)]
 
-    # 과목 체크박스 생성 (국어 기본 선택)
-    default_subjects = ['국어']
-    subjects = st.multiselect('과목 선택:', filtered_data['Subject'].unique(), default=default_subjects)
-
-    # 그래프 그리기
+    # 방사형 그래프 생성
     if not filtered_data.empty:
-        plt.figure(figsize=(10, 6))
-        for subject in subjects:
-            subject_data = filtered_data[filtered_data['Subject'] == subject]
-            plt.plot(subject_data['Total_Semester'], subject_data['Score'], marker='o', label=subject)
-        plt.xlabel('학기')
-        plt.ylabel('성적')
-        plt.title(f'{student_name}학생의 {grade[0]} ~ {grade[1]} 학년 성적')
-        plt.legend()
-        st.pyplot(plt)
+        subjects = filtered_data['Subject'].unique()
+        scores = [filtered_data[filtered_data['Subject'] == subject]['Score'].values[0] for subject in subjects]
 
-if __name__ == '__main__':
-    score_plot()
+        fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={'projection': 'polar'})
+        ax.set_theta_zero_location("N")
+        ax.set_theta_direction(-1)
+        ax.set_rlim(0, 100)
+        ax.set_thetagrids(np.arange(0, 360, 360 / len(subjects)), subjects)
+        ax.plot(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, 'bo-')
+        ax.fill(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, alpha=0.2)
+        ax.set_title(f"{student_name} 학생의 {selected_grade}학년 {selected_semester}학기 성적")
+
+        st.pyplot(fig)
+    else:
+        st.write("해당 학년 및 학기의 데이터가 없습니다.")
+
+# Streamlit 앱 실행
+st.title("학생 성적 조회")
+file_path = st.text_input("CSV 파일 경로", "student_data.csv")
+student_name = st.text_input("학생 이름", "최수아")
+plot_radar_chart(file_path, student_name)
