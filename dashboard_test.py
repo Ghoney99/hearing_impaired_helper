@@ -44,4 +44,4 @@ def radar_plot(file_path, student_name):
 st.title("학생 성적 조회")
 file_path = st.text_input("CSV 파일 경로", "student_data.csv")
 student_name = st.text_input("학생 이름", "최수아")
-plot_radar_chart(file_path, student_name)
+radar_plot(file_path, student_name)
