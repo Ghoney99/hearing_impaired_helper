@@ -4,13 +4,14 @@ import streamlit as st
 import requests
 from urllib.parse import urlencode
 import xml.etree.ElementTree as ET
+import speech_recognition as sr
 
 #####################################################################
 # 제목 : 수어 단어장
-# 수정 날짜 : 2024-06-28
+# 수정 날짜 : 2024-07-02
 # 작성자 : 장지헌
 # 수정자 : 장재혁
-# 수정 내용 : 수어 단어장 파일 생성
+# 수정 내용 : STT 추가
 #####################################################################
 
 def parse_response(response_text):
@@ -59,10 +60,10 @@ def get_video(keyword):
     else:
         print("Error:", response.text)
         return None
-    
 
 def main():
     st.title("수어 단어장 (Sign Language Helper) App")
+    
     text = st.text_input("단어를 입력하세요!")
     results = get_video(text)
     
