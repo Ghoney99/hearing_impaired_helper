@@ -1,11 +1,9 @@
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
 plt.rcParams['font.family'] ='Malgun Gothic'
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
 
 # CSV 파일 로드
 df = pd.read_csv('student_scores_korean_subjects.csv')
