@@ -50,52 +50,40 @@ def compare_student_with_average(df, student_id):
         plt.tight_layout()
         st.pyplot(fig)
 
-def sqaure_plot(df, student_id):
-    student_data = df[df['학생ID'] == student_id]
-    numeric_columns = ['국어_중간고사', '국어_기말고사', '수학_중간고사', '수학_기말고사', '영어_중간고사', '영어_기말고사', '과학_중간고사', '과학_기말고사']
-    
-    student_data = student_data[numeric_columns].apply(pd.to_numeric, errors='coerce')
-    student_data = student_data.dropna()
-    
-    if student_data.empty:
-        st.warning(f"학생 ID {student_id}의 데이터가 존재하지 않습니다.")
-        return
-    
-    student_data['학기'] = range(1, len(student_data) + 1)
-    
+def score_plot(file_path):
+    st.title('학년별 성적 조회')
 
-    avg_mid_scores = student_data.groupby('학기')[['국어_중간고사', '수학_중간고사', '영어_중간고사', '과학_중간고사']].mean().reset_index()
-    avg_final_scores = student_data.groupby('학기')[['국어_기말고사', '수학_기말고사', '영어_기말고사', '과학_기말고사']].mean().reset_index()
-    
+    # 데이터 로드
+    df = pd.read_csv(file_path)
 
-    subjects = ['국어', '수학', '영어', '과학']
-    if avg_mid_scores.empty or avg_final_scores.empty:
-        st.warning(f"학생 ID {student_id}의 시험 데이터가 불충분합니다.")
-        return
-    
-    avg_mid_scores_list = avg_mid_scores[['국어_중간고사', '수학_중간고사', '영어_중간고사', '과학_중간고사']].values.tolist()[0]
-    avg_final_scores_list = avg_final_scores[['국어_기말고사', '수학_기말고사', '영어_기말고사', '과학_기말고사']].values.tolist()[0]
-    
-    num_subjects = len(subjects)
-    angles = np.linspace(0, 2 * np.pi, num_subjects, endpoint=False).tolist()
-    
-    angles += angles[:1]
-    fig, ax = plt.subplots(figsize=(4, 4), subplot_kw=dict(polar=True))
-    ax.fill(angles, avg_mid_scores_list + avg_mid_scores_list[:1], color='blue', alpha=0.25)
-    ax.plot(angles, avg_mid_scores_list + avg_mid_scores_list[:1], color='blue', linewidth=2, label='중간고사')
-    
-    ax.fill(angles, avg_final_scores_list + avg_final_scores_list[:1], color='orange', alpha=0.25)
-    ax.plot(angles, avg_final_scores_list + avg_final_scores_list[:1], color='orange', linewidth=2, label='기말고사')
-    
-    ax.set_yticklabels([])
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(subjects, fontsize=12)
-    
-    ax.set_title(f'현학기 직전학기 성적 분포', size=20, y=1.1)
-    ax.legend(loc='upper right')
-    ax.grid(True)
-    st.pyplot(fig)
+    # 학생 이름 선택
+    student_name = '최수아'
 
+    # 선택한 학생 데이터 필터링
+    filtered_data = df[df['Name'] == student_name]
+
+    # 학년 선택
+    grade = st.slider('학년 선택:', min_value=1, max_value=6, value=(1, 6))
+
+    # 선택된 데이터 필터링
+    filtered_data = filtered_data[(filtered_data['Grade'].between(grade[0], grade[1]))]
+
+    # 과목 체크박스 생성 (국어 기본 선택)
+    default_subjects = ['국어']
+    subjects = st.multiselect('과목 선택:', filtered_data['Subject'].unique(), default=default_subjects)
+
+    # 그래프 그리기
+    if not filtered_data.empty:
+        plt.figure(figsize=(10, 6))
+        for subject in subjects:
+            subject_data = filtered_data[filtered_data['Subject'] == subject]
+            plt.plot(subject_data['Total_Semester'], subject_data['Score'], marker='o', label=subject)
+        plt.xlabel('학기')
+        plt.ylabel('성적')
+        plt.title(f'{student_name}학생의 {grade[0]} ~ {grade[1]} 학년 성적')
+        plt.legend()
+        st.pyplot(plt)
+        
 def main(name):
     # 세션 상태 가져오기
     session_state = get_session_state(sub_page=False)
@@ -126,7 +114,7 @@ def main(name):
                 student_name_to_id = {row['이름']: row['학생ID'] for _, row in df.iterrows()}
                 student_id = student_name_to_id['최수아']
                 compare_student_with_average(df, student_id)
-                sqaure_plot(df, student_id)
+                score_plot('student_data.csv')
 
             with col2:
                 ai_chatbot.main()
