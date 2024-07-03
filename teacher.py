@@ -95,7 +95,7 @@ calendar_events = [
         "start": "2024-07-30",
     }
 ]
-calendar = calendar(events=calendar_events)
+# calendar = calendar(events=calendar_events)
 
 # 사이드바에 버튼 추가
 st.sidebar.header("디지털 교과서 - 교사용")
@@ -163,29 +163,29 @@ if st.sidebar.button("학생성적"):
         score_plot(data, selected_student)
         radar_plot(data, selected_student)
         
-if st.sidebar.button("디지털 교과서"):
-    ## 여기에 추가해줘
-    # 세 개의 컬럼 만들기
-    col1, col2, col3 = st.columns(3)
+# if st.sidebar.button("디지털 교과서"):
+#     ## 여기에 추가해줘
+#     # 세 개의 컬럼 만들기
+#     col1, col2, col3 = st.columns(3)
 
-    # 첫 번째 컬럼에 이미지와 텍스트, 버튼 추가
-    with col1:
-        st.image("image\국어표지1.png", caption="국어")
-        st.text("국어")
-        if st.button("국어"):
-            # session_state.sub_page = True
-            st.experimental_rerun()  # 페이지 리로드
+#     # 첫 번째 컬럼에 이미지와 텍스트, 버튼 추가
+#     with col1:
+#         st.image("image\국어표지1.png", caption="국어")
+#         st.text("국어")
+#         if st.button("국어"):
+#             # session_state.sub_page = True
+#             st.experimental_rerun()  # 페이지 리로드
 
-    # 두 번째 컬럼에 이미지와 텍스트, 버튼 추가
-    with col2:
-        st.image("image\수학표지1.png", caption="수학")
-        st.text("수학")
-        if st.button("수학"):
-            st.write("수학 버튼을 눌렀습니다.")
+#     # 두 번째 컬럼에 이미지와 텍스트, 버튼 추가
+#     with col2:
+#         st.image("image\수학표지1.png", caption="수학")
+#         st.text("수학")
+#         if st.button("수학"):
+#             st.write("수학 버튼을 눌렀습니다.")
 
-    # 세 번째 컬럼에 이미지와 텍스트, 버튼 추가
-    with col3:
-        st.image("image\영어표지1.jpg", caption="영어")
-        st.text("영어")
-        if st.button("영어"):
-            st.write("영어 버튼을 눌렀습니다.")
+#     # 세 번째 컬럼에 이미지와 텍스트, 버튼 추가
+#     with col3:
+#         st.image("image\영어표지1.jpg", caption="영어")
+#         st.text("영어")
+#         if st.button("영어"):
+#             st.write("영어 버튼을 눌렀습니다.")
