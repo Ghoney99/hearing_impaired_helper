@@ -8,6 +8,12 @@ from streamlit_calendar import calendar # 라이브러리 설치
 # Set font family for matplotlib plots
 plt.rcParams['font.family'] = 'Malgun Gothic'
 
+st.set_page_config(layout="wide")
+
+# 스트림릿 테마 선택
+
+
+
 def score_plot(file_path, student_name):
     st.title(f'{student_name}의 학년별 성적 조회')
 
@@ -87,8 +93,6 @@ def main():
     # CSV 파일 읽기
     file_path = 'student_data.csv'
     df = pd.read_csv(file_path)
-
-    st.set_page_config(layout="wide")
 
     with st.sidebar:
         choose = option_menu("메뉴", ["학생 성적", "디지털 교과서", "학사 일정", "학습 현황"],
