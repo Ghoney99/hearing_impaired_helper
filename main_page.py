@@ -60,45 +60,44 @@ def score_plot(file_path, s_name):
         st.pyplot(plt)
         
 
-def radar_plot(file_path, student_name):
-    # 데이터 읽기
-    df = pd.read_csv(file_path)
+# def radar_plot(file_path, student_name):
+#     # 데이터 읽기
+#     df = pd.read_csv(file_path)
 
-    # 학생 데이터 필터링
-    student_data = df[df['Name'] == student_name]
+#     # 학생 데이터 필터링
+#     student_data = df[df['Name'] == student_name]
 
-    # 학년 및 학기 선택 옵션 생성
-    unique_grades = student_data['Grade'].unique()
-    unique_semesters = student_data['Semester'].unique()
+#     # 학년 및 학기 선택 옵션 생성
+#     unique_grades = student_data['Grade'].unique()
+#     unique_semesters = student_data['Semester'].unique()
 
-    # 학년 및 학기 선택
-    selected_grade = st.selectbox(f"{student_name} 학생의 학년", unique_grades)
-    selected_semester = st.selectbox(f"{selected_grade}학년 학기", unique_semesters)
+#     # 학년 및 학기 선택
+#     selected_grade = st.selectbox(f"{student_name} 학생의 학년", unique_grades)
+#     selected_semester = st.selectbox(f"{selected_grade}학년 학기", unique_semesters)
 
-    # 선택한 학년 및 학기의 데이터 필터링
-    filtered_data = student_data[(student_data['Grade'] == selected_grade) & (student_data['Semester'] == selected_semester)]
+#     # 선택한 학년 및 학기의 데이터 필터링
+#     filtered_data = student_data[(student_data['Grade'] == selected_grade) & (student_data['Semester'] == selected_semester)]
 
-    # 방사형 그래프 생성
-    if not filtered_data.empty:
-        subjects = filtered_data['Subject'].unique()
-        scores = [filtered_data[filtered_data['Subject'] == subject]['Score'].values[0] for subject in subjects]
+#     # 방사형 그래프 생성
+#     if not filtered_data.empty:
+#         subjects = filtered_data['Subject'].unique()
+#         scores = [filtered_data[filtered_data['Subject'] == subject]['Score'].values[0] for subject in subjects]
 
-        fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={'projection': 'polar'})
-        ax.set_theta_zero_location("N")
-        ax.set_theta_direction(-1)
-        ax.set_rlim(0, 100)
-        ax.set_thetagrids(np.arange(0, 360, 360 / len(subjects)), subjects)
-        ax.plot(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, 'o', color='blue', alpha=0.7)
-        ax.fill(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, alpha=0.2)
-        ax.set_title(f"{student_name} 학생의 {selected_grade}학년 {selected_semester}학기 성적")
+#         fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={'projection': 'polar'})
+#         ax.set_theta_zero_location("N")
+#         ax.set_theta_direction(-1)
+#         ax.set_rlim(0, 100)
+#         ax.set_thetagrids(np.arange(0, 360, 360 / len(subjects)), subjects)
+#         ax.plot(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, 'o', color='blue', alpha=0.7)
+#         ax.fill(np.radians(np.arange(0, 360, 360 / len(subjects))), scores, alpha=0.2)
+#         ax.set_title(f"{student_name} 학생의 {selected_grade}학년 {selected_semester}학기 성적")
 
-        st.pyplot(fig)
-    else:
-        st.write("해당 학년 및 학기의 데이터가 없습니다.")
+#         st.pyplot(fig)
+#     else:
+#         st.write("해당 학년 및 학기의 데이터가 없습니다.")
 
 
 def main(name):
-    # 세션 상태 가져오기
     session_state = get_session_state(sub_page=False)
     if not session_state.sub_page:
     
@@ -115,32 +114,83 @@ def main(name):
                 "nav-link-selected": {"background-color": "#02ab21"},
         }
         )
+        
+        # 상단 바 추가
+        col1, col2, col3 = st.columns([1,6,1])
+        with col1:
+            st.write(f"# {name} 😊")
+        with col2:
+            st.text_input("검색하세요", placeholder="검색어를 입력하세요")
+        with col3:
+            st.button("🔔")
+
         if choose == "마이페이지":
-            col1, col2 = st.columns([2, 1])
+            col1, col2, col3 = st.columns([2, 1, 1])
             
             with col1:
                 st.title(name)
-                col1_1, col1_2 = st.columns([2, 1])
-                with col1_1:
-                    st.image("image\s_img.jpg", width=270)
-                with col1_2:
-                    st.subheader("나의 인적사항")
-                    st.write("학년: 6학년")
-                    st.write("나이: 12세")
-                    st.write("특이사항: 청각장애 4급1호")
-                    st.write("주소: 대구광역시 중구")
-                    st.write("학생 연락처: 010-1234-5678")
-                    st.write("부모 연락처: 010-1234-5678")
-                    
-                score_plot('student_data.csv', '최수아')
-                radar_plot('student_data.csv', '최수아')
+                
+                # 학년별 평가 (score_plot 함수 사용)
+                score_plot('student_data.csv', name)
+                
+                # 과목별 부족한 유형 분석
+                st.subheader("과목별 부족한 유형 분석")
+                subject_cols = st.columns(3)
+                for i, subject in enumerate(['국어', '수학', '과학']):
+                    with subject_cols[i]:
+                        st.write(f"### {subject}")
+                        fig, ax = plt.subplots()
+                        ax.pie([40, 30, 30], labels=['유형1', '유형2', '유형3'], autopct='%1.1f%%')
+                        st.pyplot(fig)
 
             with col2:
+                st.subheader("부족한 과목 분석")
+                fig, ax = plt.subplots()
+                size = 0.3
+                vals = [40, 30, 20, 10]
+                ax.pie(vals, labels=['국어', '수학', '과학', '사회'], radius=1, wedgeprops=dict(width=size, edgecolor='white'))
+                st.pyplot(fig)
+
+                st.subheader("선생님 1:1 문의")
+                teachers = ['박선생', '김선생', '이선생']
+                for teacher in teachers:
+                    st.write(f"🧑‍🏫 {teacher}")
+
+                st.subheader("Your Rating")
+                fig, ax = plt.subplots()
+                ax.bar(['Hygiene', 'Food Taste', 'Packaging'], [85, 85, 92], color=['purple', 'orange', 'cyan'])
+                st.pyplot(fig)
+
+            with col3:
+                # AI 튜터
+                st.subheader("AI 튜터")
                 ai_chatbot.main()
         
-        
-        if choose == "교과서":   
-
+        elif choose == "교과서": 
+            
+            info_col1, info_col2, info_col3 = st.columns(3)
+            with info_col1:
+                st.markdown("""
+                <div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>
+                    <h3 style='color: green;'>✏️ 국어</h3>
+                    <p>▲ 수업시간: 금요일 2교시</p>
+                </div>
+                """, unsafe_allow_html=True)
+            with info_col2:
+                st.markdown("""
+                <div style='background-color: #e6f3ff; padding: 10px; border-radius: 10px;'>
+                    <h3 style='color: blue;'>📋 받아쓰기</h3>
+                    <p>▲ 4월 26일까지</p>
+                </div>
+                """, unsafe_allow_html=True)
+            with info_col3:
+                st.markdown("""
+                <div style='background-color: #ffe6f3; padding: 10px; border-radius: 10px;'>
+                    <h3 style='color: purple;'>📅 운동회</h3>
+                    <p>▲ 4월 30일</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
             # 세 개의 컬럼 만들기
             col1, col2, col3 = st.columns(3)
 
