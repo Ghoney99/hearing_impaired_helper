@@ -111,20 +111,26 @@ def main():
             # 1. 학생 이미지
             # 1. 학생 이미지 (크기 조절)
             with col1:
-                st.image("image\s_img.jpg", width=200)
-
-
+                col1_1, col1_2 = st.columns([1, 1])
+                with col1_1:
+                    st.image("image\s_img.jpg", width=270)
+                with col1_2:
+                    st.subheader(f"{selected_student}의 인적사항")
+                    st.write("이름: ", selected_student)
+                    st.write("학년: 6학년")
+                    st.write("나이: 12세")
+                    st.write("특이사항: 청각장애 4급1호")
+                    st.write("주소: 대구광역시 중구")
+                    st.write("학생 연락처: 010-1234-5678")
+                    st.write("부모 연락처: 010-1234-5678")
+                ####
+                # 내용을 추가하고 싶어
+                st.image("image\청각장애 등급.png", width=600)
+                ####
+                
             # 2. Radar plot
             with col2:
                 radar_plot(file_path, selected_student)
-
-            st.write("---")
-
-            # 3. 학생 인적사항 (임의로 작성)
-            st.subheader(f"{selected_student}의 인적사항")
-            st.write("이름: ", selected_student)
-            st.write("학년: 4학년")
-            st.write("나이: 10세")
 
             st.write("---")
 
@@ -174,7 +180,7 @@ def main():
         }
         df_learning = pd.DataFrame(learning_data)
 
-        st.write("과목별 진도 현황")
+        st.header("영어와 사회 과목의 진도가 타 과목들에 비해서 많이 뒤처지고 있어서 학습 계획을 재조정할 필요가 있습니다. \n영어와 사회 과목 모두 중요한 과목이기 때문에, 이러한 상황을 개선하기 위해 추가적인 학습 시간을 배정하고, 필요한 경우에는 보충 수업을 진행하는 것도 고려해 볼 필요가 있습니다.\n특히, 영어 과목의 경우 문법과 어휘, 독해 능력 향상을 위한 추가적인 연습이 필요하며, 사회 과목의 경우 다양한 역사적 사건과 사회적 이슈에 대한 깊이 있는 이해를 돕기 위한 자료를 제공하는 것이 중요합니다. 이러한 조치들을 통해 두 과목의 학습 진도를 다른 과목들과 균형 있게 맞춰 나가도록 노력해야 합니다.")
         num_charts_per_row = 3
         num_subjects = len(df_learning)
         num_rows = (num_subjects + num_charts_per_row - 1) // num_charts_per_row

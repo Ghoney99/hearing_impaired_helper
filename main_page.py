@@ -120,7 +120,18 @@ def main(name):
             
             with col1:
                 st.title(name)
-                st.write("성적 확인")
+                col1_1, col1_2 = st.columns([2, 1])
+                with col1_1:
+                    st.image("image\s_img.jpg", width=270)
+                with col1_2:
+                    st.subheader("나의 인적사항")
+                    st.write("학년: 6학년")
+                    st.write("나이: 12세")
+                    st.write("특이사항: 청각장애 4급1호")
+                    st.write("주소: 대구광역시 중구")
+                    st.write("학생 연락처: 010-1234-5678")
+                    st.write("부모 연락처: 010-1234-5678")
+                    
                 score_plot('student_data.csv', '최수아')
                 radar_plot('student_data.csv', '최수아')
 
