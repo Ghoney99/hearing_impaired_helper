@@ -1,11 +1,10 @@
 import streamlit as st
 # 수어 인식 모델 라이브러리
-from Sign_Language_Translation.modules.utils import Vector_Normalization
+from modules.utils import Vector_Normalization
 from PIL import ImageFont, ImageDraw, Image
-from Sign_Language_Translation.unicode import join_jamos
+from modules.unicode import join_jamos
 import tensorflow as tf
-import Sign_Language_Translation.modules.holistic_module as hm
-from tensorflow.keras.models import load_model
+import modules.holistic_module as hm
 import cv2
 import mediapipe as mp
 import numpy as np
