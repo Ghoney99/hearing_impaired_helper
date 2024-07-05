@@ -24,17 +24,17 @@ def speech_to_text(recognizer):
         st.write(f"음성 인식 서비스에 접근할 수 없습니다: {e}")
 
 
-def main():
-    st.title("Speech-to-Text (STT) App")
-    st.write("STT 관련 콘텐츠")
-    # Recognizer 객체 생성
-    recognizer = sr.Recognizer()
+# def main():
+#     st.title("Speech-to-Text (STT) App")
+#     st.write("STT 관련 콘텐츠")
+#     # Recognizer 객체 생성
+#     recognizer = sr.Recognizer()
 
-    # Streamlit 애플리케이션 정의
-    st.title("마이크로부터 텍스트로 변환하기")
+#     # Streamlit 애플리케이션 정의
+#     st.title("마이크로부터 텍스트로 변환하기")
 
-    st.write("마이크를 통해 음성을 입력하고 '인식' 버튼을 클릭하세요.")
+#     st.write("마이크를 통해 음성을 입력하고 '인식' 버튼을 클릭하세요.")
 
-    if st.button("인식"):
-        result = speech_to_text(recognizer)
-#####################################################################
+#     if st.button("인식"):
+#         result = speech_to_text(recognizer)
+# #####################################################################

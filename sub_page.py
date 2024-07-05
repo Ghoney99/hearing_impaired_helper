@@ -38,7 +38,7 @@ def main():
     # st.set_page_config(layout="wide")
 
     with st.sidebar:
-        choose = option_menu("VONDI", ["STT", '수어 단어장', "수어 도우미"],
+        choose = option_menu("VONDI", ['수어 단어장', "수어 도우미"],
                             icons=['bi bi-card-text', 'bi bi-journal', 'bi bi-file-play'],
                             menu_icon="app-indicator", default_index=0,
                             styles={
@@ -57,18 +57,18 @@ def main():
     # Recognizer 객체 생성
     recognizer = sr.Recognizer()
 
-    if choose == "STT":
-        col1, col2 = st.columns([2, 1])
+    # if choose == "STT":
+    #     col1, col2 = st.columns([2, 1])
         
-        with col1:
-            st.image("image\국어내용.png", caption="국어")
-            if st.button("자막"):
-                result = speech_to_text(recognizer)
+    #     with col1:
+    #         st.image("image\국어내용.png", caption="국어")
+    #         if st.button("자막"):
+    #             result = speech_to_text(recognizer)
                 
-        with col2:
-            stt.main()
+    #     with col2:
+    #         stt.main()
         
-    elif choose == "수어 단어장":
+    if choose == "수어 단어장":
         col1, col2 = st.columns([2, 1])
         
         with col1:
