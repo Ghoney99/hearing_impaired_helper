@@ -13,7 +13,7 @@ from openai import OpenAI
 import speech_recognition as sr
 
 # 파일 불러오기
-import stt, voca, helper
+import stt, voca, helper, ai_chatbot
 
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
@@ -35,7 +35,7 @@ def speech_to_text(recognizer):
 
 
 def main():
-    st.set_page_config(layout="wide")
+    # st.set_page_config(layout="wide")
 
     with st.sidebar:
         choose = option_menu("VONDI", ["STT", '수어 단어장', "수어 도우미"],
@@ -46,12 +46,17 @@ def main():
             "icon": {"color": "orange", "font-size": "25px"}, 
             "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
             "nav-link-selected": {"background-color": "#02ab21"},
-    }
-    )
-    
+        })
+        ai_chatbot.main()
+        # 사이드바 맨 아래에 '나가기' 버튼 추가
+        st.sidebar.markdown("<br>" * 10, unsafe_allow_html=True)  # 간격 추가
+        if st.sidebar.button("나가기"):
+            st.session_state.sub_page = False
+            st.experimental_rerun()
+
     # Recognizer 객체 생성
     recognizer = sr.Recognizer()
-    
+
     if choose == "STT":
         col1, col2 = st.columns([2, 1])
         
@@ -59,10 +64,10 @@ def main():
             st.image("image\국어내용.png", caption="국어")
             if st.button("자막"):
                 result = speech_to_text(recognizer)
-                            
+                
         with col2:
             stt.main()
-            
+        
     elif choose == "수어 단어장":
         col1, col2 = st.columns([2, 1])
         
@@ -73,14 +78,14 @@ def main():
             
         with col2:
             voca.main()
-  
+
     elif choose == "수어 도우미":
         col1, col2 = st.columns([2, 1])
         
         with col1:
             st.image("image\국어내용.png", caption="국어")
             if st.button("자막"):
-                result = speech_to_text(recognizer)       
-                     
+                result = speech_to_text(recognizer)
+                
         with col2:
             helper.main()
