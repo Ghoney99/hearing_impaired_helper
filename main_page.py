@@ -172,7 +172,7 @@ def main(name):
             with col1:
                 # 학년별 성적 조회
                 st.subheader("학년별 성적 조회")
-                score_plot('student_data.csv', name)
+                score_plot('datasets/student_data.csv', name)
 
             with col2:
                 # 부족한 과목 분석
@@ -241,7 +241,7 @@ def main(name):
             with col5:
                 # 작년 성적과 현 학년 성적 비교
                 st.subheader("학년별 과목 성적 비교")
-                comparison_fig = compare_grades('student_data.csv', name)
+                comparison_fig = compare_grades('datasets/student_data.csv', name)
                 st.pyplot(comparison_fig)
 
             with col6:

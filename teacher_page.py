@@ -86,7 +86,7 @@ def main(teacher_name):
     st.title(f"선생님 대시보드 - {teacher_name}")
 
     # CSV 파일 읽기
-    file_path = 'student_data.csv'
+    file_path = 'datasets/student_data.csv'
     df = pd.read_csv(file_path)
 
     with st.sidebar:
