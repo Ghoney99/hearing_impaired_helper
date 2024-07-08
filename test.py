@@ -1,38 +1,48 @@
 import requests
 
-# 카카오 API 키
-api_key = 'YOUR_KAKAO_API_KEY'
+api_key = "723ce630d2eb8321020251e9bcbb01a3"
 
-def get_related_words(query):
-    # API 요청 URL
-    url = 'https://dapi.kakao.com/v2/search/web'
-
-    # 요청 헤더
+def get_related_keywords(query, api_key):
+    url = "https://dapi.kakao.com/v2/search/web"
     headers = {
-        'Authorization': f'KakaoAK {api_key}'
+        "Authorization": f"KakaoAK {api_key}"
     }
-
-    # 요청 파라미터
     params = {
-        'query': query
+        "query": query,
+        "size": 10
     }
 
-    # API 요청 보내기
-    response = requests.get(url, headers=headers, params=params)
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()  # 오류가 있으면 예외를 발생시킵니다.
+        
+        print(f"Status Code: {response.status_code}")
+        print(f"Response: {response.text[:500]}...")  # 응답의 일부를 출력합니다.
 
-    # 응답 확인
-    if response.status_code == 200:
-        data = response.json()
-        # 검색 결과에서 연관 단어 추출 (여기서는 임의로 3개의 연관 단어를 출력하도록 함)
-        documents = data.get('documents', [])
-        related_words = [doc['title'] for doc in documents[:3]]
-        return related_words
-    else:
-        print('Error:', response.status_code, response.text)
+        result = response.json()
+        documents = result.get("documents", [])
+
+        print(f"Number of documents: {len(documents)}")
+
+        keywords = set()
+        for doc in documents:
+            title = doc.get("title", "")
+            contents = doc.get("contents", "")
+            keywords.update(title.split() + contents.split())
+
+        # 입력 쿼리와 불용어 제거
+        keywords = [word for word in keywords if word.lower() != query.lower() and len(word) > 1]
+
+        return list(set(keywords))[:10]  # 상위 10개 키워드 반환
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error occurred: {e}")
         return []
 
-# 테스트
-query = '배고파에 관련된 연관단어를 출력해줘'
-related_words = get_related_words(query)
-print(f'Query: {query}')
-print('Related Words:', related_words)
+# 사용 예시
+query = input("키워드를 입력하세요: ")
+related_keywords = get_related_keywords(query, api_key)
+
+print(f"'{query}'의 연관 키워드:")
+for i, keyword in enumerate(related_keywords, 1):
+    print(f"{i}. {keyword}")
