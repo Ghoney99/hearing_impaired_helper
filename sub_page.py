@@ -38,7 +38,7 @@ def main():
     # st.set_page_config(layout="wide")
 
     with st.sidebar:
-        choose = option_menu("VONDI", ['수어 단어장', "수어 도우미"],
+        choose = option_menu("VONDI", ['AI 속기사', '수어 번역', '수어 사전', '노트 필기'],
                             icons=['bi bi-card-text', 'bi bi-journal', 'bi bi-file-play'],
                             menu_icon="app-indicator", default_index=0,
                             styles={
@@ -47,7 +47,6 @@ def main():
             "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
             "nav-link-selected": {"background-color": "#02ab21"},
         })
-        ai_chatbot.main()
         # 사이드바 맨 아래에 '나가기' 버튼 추가
         st.sidebar.markdown("<br>" * 10, unsafe_allow_html=True)  # 간격 추가
         if st.sidebar.button("나가기"):
@@ -67,19 +66,8 @@ def main():
                 
     #     with col2:
     #         stt.main()
-        
-    if choose == "수어 단어장":
-        col1, col2 = st.columns([2, 1])
-        
-        with col1:
-            st.image("image\국어내용.png", caption="국어")
-            if st.button("자막"):
-                result = speech_to_text(recognizer)
-            
-        with col2:
-            voca.main()
 
-    elif choose == "수어 도우미":
+    if choose == "AI 속기사":
         col1, col2 = st.columns([2, 1])
         
         with col1:
@@ -88,4 +76,34 @@ def main():
                 result = speech_to_text(recognizer)
                 
         with col2:
+            ai_chatbot.main()
+            
+    elif choose == "수어 번역":
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.image("image\국어내용.png", caption="국어")
             helper.main()
+                
+        with col2:
+            ai_chatbot.main()
+            
+    elif choose == "수어 사전":
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.image("image\국어내용.png", caption="국어")
+            voca.main()
+            
+        with col2:
+            ai_chatbot.main()
+            
+    elif choose == "노트 필기":
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.image("image\국어내용.png", caption="국어")
+            # 노트 필기 함수 추가
+            
+        with col2:
+            ai_chatbot.main()

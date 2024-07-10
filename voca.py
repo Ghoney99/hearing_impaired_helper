@@ -62,7 +62,7 @@ def get_video(keyword):
         return None
 
 def main():
-    st.title("수어 단어장 (Sign Language Helper) App")
+    st.title("수어 사전")
     
     text = st.text_input("단어를 입력하세요!")
     results = get_video(text)

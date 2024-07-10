@@ -39,8 +39,7 @@ def add_unique_element(lst, element):
 result_word = ''
 
 def main():
-    st.title("수어 도우미 (Sign Language Helper) App")
-    st.write("수어 도우미 관련 콘텐츠")
+    st.title("수어 번역")
     
     fontpath = "fonts/HMKMMAG.TTF"
     font = ImageFont.truetype(fontpath, 40)
@@ -54,9 +53,6 @@ def main():
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 
-    # 스트림릿 앱 레이아웃 및 버튼 생성
-    st.title('Gesture Recognition with Streamlit')
-
     # 카메라 캡처 객체와 관련 변수 초기화
     cap = None
     seq = []
@@ -65,7 +61,7 @@ def main():
     detector = hm.HolisticDetector(min_detection_confidence=0.3)
 
     # 'Run Gesture Recognition' 버튼 클릭 시 동작
-    if st.button('Run Gesture Recognition'):
+    if st.button('번역'):
         result_word = ''
 
         # 카메라 캡처 시작
