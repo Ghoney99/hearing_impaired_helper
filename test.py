@@ -41,7 +41,7 @@ def summarize_text(text, num_sentences=3):
     return ' '.join([sentences[j] for j in sorted(indexes)])
 
 # 사용 예시
-file_path = 'lecture.txt'  # 강의 내용이 저장된 txt 파일 경로
+file_path = 'lecture2.txt'  # 강의 내용이 저장된 txt 파일 경로
 lecture_text = read_file(file_path)
 summary = summarize_text(lecture_text, num_sentences=3)
 print(summary)

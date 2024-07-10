@@ -10,6 +10,14 @@ from tkinter.tix import COLUMN
 from pyparsing import empty
 import matplotlib.pyplot as plt
 
+# #####################################################################
+# # 제목 : 메인 페이지
+# # 수정 날짜 : 2024-07-10
+# # 작성자 : 장재혁
+# # 수정자 : 장지헌
+# # 수정 내용 : 사이드바 제목 수정 및 기능 추가
+# #####################################################################
+
 # 파일불러오기
 import sub_page, ai_chatbot
 
@@ -150,9 +158,6 @@ def main(name):
                 "nav-link-selected": {"background-color": "#02ab21"},
             })
             
-            # AI 튜터
-            # st.subheader("AI 튜터")
-            ai_chatbot.main()
 
         # 상단 바
         col1, col2, col3 = st.columns([1,6,1])

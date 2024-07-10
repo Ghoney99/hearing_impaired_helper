@@ -12,6 +12,14 @@ import matplotlib.pyplot as plt
 from openai import OpenAI
 import speech_recognition as sr
 
+# #####################################################################
+# # 제목 : 서브 페이지
+# # 수정 날짜 : 2024-07-10
+# # 작성자 : 장재혁
+# # 수정자 : 장지헌
+# # 수정 내용 : 교과서 영역 레이아웃 변경
+# #####################################################################
+
 # 파일 불러오기
 import stt, voca, helper, ai_chatbot
 

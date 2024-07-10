@@ -4,98 +4,219 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import numpy as np
+from streamlit_option_menu import option_menu
 
-# st.set_page_config(layout="wide", page_title="관리자 대시보드", page_icon="🔐")
-
-# CSS를 사용하여 다크모드 스타일 적용
-st.markdown("""
-<style>
-    .reportview-container {
-        background-color: #1E1E1E;
-        color: #FFFFFF;
-    }
-    .sidebar .sidebar-content {
-        background-color: #2E2E2E;
-    }
-    .Widget>label {
-        color: #FFFFFF;
-    }
-    .stPlotlyChart {
-        background-color: #2E2E2E;
-    }
-</style>
-""", unsafe_allow_html=True)
+#####################################################################
+# 제목 : 관리자 페이지
+# 수정 날짜 : 2024-07-10
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 관리자 페이지 완성
+#####################################################################
 
 def main(admin_name):
     st.sidebar.title(f"환영합니다, {admin_name}")
     
-    menu = st.sidebar.selectbox(
-        "메뉴 선택",
-        ["기본 대시보드", "API 사용량", "시스템 성능", "데이터베이스 관리", "보안 현황", "사용자 관리", "로그 분석"]
-    )
+    with st.sidebar:
+        choose = option_menu("VONDI", 
+                             ['종합', '서버 및 시스템', 'DB 관리', 'API 사용량', '보안 현황', '사용자 관리', '로그 분석'],
+                             icons=['house', 'graph-up', 'pc-display', 'database', 'shield-lock', 'people', 'journal-text'],
+                             menu_icon="app-indicator", 
+                             default_index=0,
+                             styles={
+                                 "container": {"padding": "5!important", "background-color": "#fafafa"},
+                                 "icon": {"color": "orange", "font-size": "25px"},
+                                 "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+                                 "nav-link-selected": {"background-color": "#02ab21"},
+                             }
+        )
     
-    if menu == "기본 대시보드":
+    if choose == '종합':
         show_dashboard()
-    elif menu == "API 사용량":
+    elif choose == 'API 사용량':
         show_api_usage()
-    elif menu == "시스템 성능":
+    elif choose == '서버 및 시스템':
         show_system_performance()
-    elif menu == "데이터베이스 관리":
+    elif choose == 'DB 관리':
         show_database_management()
-    elif menu == "보안 현황":
+    elif choose == '보안 현황':
         show_security_status()
-    elif menu == "사용자 관리":
+    elif choose == '사용자 관리':
         show_user_management()
-    elif menu == "로그 분석":
+    elif choose == '로그 분석':
         show_log_analysis()
 
+#####################################################################
+# 제목 : 기본 대시보드
+# 수정 날짜 : 2024-07-10
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 레이아웃 조정, 이미지 추가
+#####################################################################
 def show_dashboard():
-    st.title("관리자 대시보드")
+    st.title("대시보드")
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric(label="활성 사용자 수", value="1,234", delta="32")
+        st.metric(label="활성 사용자 수", value="1,327", delta="32")
     with col2:
-        st.metric(label="일일 로그인 수", value="5,678", delta="-12") 
+        st.metric(label="일일 로그인 수", value="2,071", delta=None)
     with col3:
-        st.metric(label="서버 응답 시간", value="24 ms", delta="-3 ms")
+        st.metric(label="서버 응답 시간", value="24 ms", delta="-3ms")
     with col4:
         st.metric(label="CPU 사용률", value="45%", delta="5%")
     
-    # 일일 로그인 데이터 로드
-    df = pd.read_csv('datasets/daily_logins.csv')
+    st.subheader("서버 모니터링")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.subheader("CPU 사용률")
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number",
+            value = 57,
+            title = {'text': "CPU 사용률 (%)"},
+            gauge = {
+                'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
+                'bar': {'color': "royalblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 50], 'color': "green"},
+                    {'range': [50, 80], 'color': "yellow"},
+                    {'range': [80, 100], 'color': "red"}
+                ],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 80
+                }
+            }
+        ))
+        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#FFFFFF")
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col2:
+        st.subheader("트래픽")
+        st.subheader("CPU 사용률")
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number",
+            value = 67,
+            title = {'text': "CPU 사용률 (%)"},
+            gauge = {
+                'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
+                'bar': {'color': "royalblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 50], 'color': "green"},
+                    {'range': [50, 80], 'color': "yellow"},
+                    {'range': [80, 100], 'color': "red"}
+                ],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 80
+                }
+            }
+        ))
+        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#FFFFFF")
+        st.plotly_chart(fig, use_container_width=True)
+        
+    with col3:
+        st.subheader("메모리 사용량")
+        st.subheader("CPU 사용률")
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number",
+            value = 50,
+            title = {'text': "CPU 사용률 (%)"},
+            gauge = {
+                'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
+                'bar': {'color': "royalblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 50], 'color': "green"},
+                    {'range': [50, 80], 'color': "yellow"},
+                    {'range': [80, 100], 'color': "red"}
+                ],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 80
+                }
+            }
+        ))
+        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#FFFFFF")
+        st.plotly_chart(fig, use_container_width=True)
+
+    st.subheader("API 사용량")
+    df = pd.read_csv('datasets/api_usage.csv')
     df['date'] = pd.to_datetime(df['date'])
     
-    # 일일 로그인 추이
-    fig_daily = px.line(df, x="date", y="logins", title="일일 로그인 추이")
-    fig_daily.update_layout(
+    fig = px.area(df, x="date", y="calls", color="api_name", title="API 사용량 추이")
+    fig.update_layout(
+        xaxis_title="날짜",
+        yaxis_title="API 호출 횟수",
+        legend_title="API 종류",
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         font_color="#FFFFFF"
     )
-    st.plotly_chart(fig_daily, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
+
     
-    # 주간 로그인 추이
-    df_weekly = df.resample('W', on='date').sum().reset_index()
-    fig_weekly = px.line(df_weekly, x="date", y="logins", title="주간 로그인 추이")
-    fig_weekly.update_layout(
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        font_color="#FFFFFF"
-    )
-    st.plotly_chart(fig_weekly, use_container_width=True)
-    
-    # 월간 로그인 추이
-    df_monthly = df.resample('M', on='date').sum().reset_index()
-    fig_monthly = px.line(df_monthly, x="date", y="logins", title="월간 로그인 추이")
-    fig_monthly.update_layout(
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        font_color="#FFFFFF"
-    )
-    st.plotly_chart(fig_monthly, use_container_width=True)
-    
+    col4, col5 = st.columns(2)
+    with col4:
+        st.subheader("DB")
+        db_usage = 65
+        st.write(f"총 용량 대비 사용 용량: {db_usage}%")
+        st.progress(db_usage / 100)
+        st.write("사용 347GB / 총 534GB")
+
+        st.subheader("기능별 데이터베이스 사용률")
+        db_usage_by_feature = {
+            'AI 비서': 30,
+            '교과서': 35,
+            '수업 시간': 20,
+            '학생 관리': 15
+        }
+        fig = px.pie(values=list(db_usage_by_feature.values()), names=list(db_usage_by_feature.keys()), title="기능별 데이터베이스 사용률")
+        fig.update_layout(
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font_color="#FFFFFF"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col5:
+        st.subheader("시스템 상태")
+        
+        # 시스템 상태
+        system_status = "정상"
+        if system_status == "정상":
+            st.success(f"시스템 상태: {system_status}")
+        else:
+            st.error(f"시스템 상태: {system_status}")
+        
+        # 이미지 추가
+        st.image("image\재혁쓰.jpg", width=200)
+        
+        # 추가 정보
+        st.markdown("---")  # 구분선 추가
+        st.write("**한국교육학술정보원**")
+        st.write("전산실 팀장: 장재혁")
+
+#####################################################################
+# 제목 : 관리자 페이지
+# 수정 날짜 : 2024-07-4
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : API 대시보드 함수 완성
+#####################################################################
 def show_api_usage():
     st.title("API 사용량")
     
@@ -135,8 +256,15 @@ def show_api_usage():
     )
     st.plotly_chart(fig_monthly, use_container_width=True)
 
+#####################################################################
+# 제목 : 서버 퍼포먼스 대시보드
+# 수정 날짜 : 2024-07-04
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 서버 퍼포먼스 대시보드 함수 완성
+#####################################################################
 def show_system_performance():
-    st.title("시스템 성능")
+    st.title("서버 및 시스템")
     
     col1, col2 = st.columns(2)
     
@@ -195,8 +323,15 @@ def show_system_performance():
     st.metric(label="네트워크 입력", value=f"{network_in} Mbps")
     st.metric(label="네트워크 출력", value=f"{network_out} Mbps")
 
+#####################################################################
+# 제목 : DB 대시보드
+# 수정 날짜 : 2024-07-04
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : DB 대시보드 함수 완성
+#####################################################################
 def show_database_management():
-    st.title("데이터베이스 관리")
+    st.title("DB 관리")
     
     # DB 사용량 데이터 로드
     db_usage = pd.read_csv('datasets/db_usage.csv')
@@ -235,6 +370,13 @@ def show_database_management():
     )
     st.plotly_chart(fig, use_container_width=True)
 
+#####################################################################
+# 제목 : 보안현황 대시보드
+# 수정 날짜 : 2024-07-05
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 보안현황 대시보드 함수 완성
+#####################################################################
 def show_security_status():
     st.title("보안 현황")
     
@@ -269,6 +411,13 @@ def show_security_status():
     st.subheader("SSL 인증서 상태")
     st.info("SSL 인증서가 유효합니다. 만료일: 2025-07-01")
 
+#####################################################################
+# 제목 : 사용자관리 대시보드
+# 수정 날짜 : 2024-07-05
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 사용자관리 대시보드 함수 완성
+#####################################################################
 def show_user_management():
     st.title("사용자 관리")
     
@@ -285,6 +434,13 @@ def show_user_management():
     if st.button("사용자 추가"):
         st.success("새 사용자가 추가되었습니다.")
 
+#####################################################################
+# 제목 : 로그 대시보드
+# 수정 날짜 : 2024-07-05
+# 작성자 : 장지헌
+# 수정자 : 장지헌
+# 수정 내용 : 로그 대시보드 함수 완성
+#####################################################################
 def show_log_analysis():
     st.title("로그 분석")
     

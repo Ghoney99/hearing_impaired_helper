@@ -11,7 +11,7 @@ import speech_recognition as sr
 # 수정 날짜 : 2024-07-02
 # 작성자 : 장지헌
 # 수정자 : 장재혁
-# 수정 내용 : STT 추가
+# 수정 내용 : STT 삭제
 #####################################################################
 
 def parse_response(response_text):
