@@ -18,8 +18,6 @@ from streamlit_option_menu import option_menu
 def main(admin_name):
     st.set_page_config(layout="wide", page_title="관리자 대시보드", page_icon="🔐")
     
-    st.sidebar.title(f"환영합니다, {admin_name}")
-        
     with st.sidebar:
         choose = option_menu("VONDI", 
                              ['종합', '서버 및 시스템', 'DB 관리', 'API 사용량', '보안 현황', '사용자 관리', '로그 분석'],
