@@ -46,6 +46,7 @@ def main():
     # st.set_page_config(layout="wide")
 
     with st.sidebar:
+        st.image('image\logo.png')
         choose = option_menu("VONDI", ['AI 속기사', '수어 번역', '수어 사전', '노트 필기'],
                             icons=['bi bi-card-text', 'bi bi-journal', 'bi bi-file-play'],
                             menu_icon="app-indicator", default_index=0,

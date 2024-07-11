@@ -19,6 +19,7 @@ def main(admin_name):
     st.set_page_config(layout="wide", page_title="관리자 대시보드", page_icon="🔐")
     
     with st.sidebar:
+        st.image('image\logo.png')
         choose = option_menu("VONDI", 
                              ['종합', '서버 및 시스템', 'DB 관리', 'API 사용량', '보안 현황', '사용자 관리', '로그 분석'],
                              icons=['house', 'graph-up', 'pc-display', 'database', 'shield-lock', 'people', 'journal-text'],

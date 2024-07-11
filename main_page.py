@@ -146,6 +146,7 @@ def main(name):
         sub_page.main()
     else:
         with st.sidebar:
+            st.image('image\logo.png')
             choose = option_menu("VONDI", ['마이페이지', "교과서"],
                                 icons=['house', 'bi bi-journals'],
                                 menu_icon="app-indicator", default_index=0,

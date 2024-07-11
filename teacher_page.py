@@ -98,6 +98,7 @@ def main(teacher_name):
     df = pd.read_csv(file_path)
 
     with st.sidebar:
+        st.image('image\logo.png')
         choose = option_menu("메뉴", ["학생 관리", "성적 관리", "학사 일정", "학습 진도"],
                              icons=['bi bi-people', 'bi bi-graph-up', 'bi bi-calendar', 'bi bi-book'],
                              default_index=0,

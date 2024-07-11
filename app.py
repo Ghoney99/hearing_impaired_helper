@@ -23,7 +23,7 @@ if 'user_type' not in st.session_state:
 
 if not st.session_state.main_page:
     # 초기 페이지: 버튼 표시
-    st.title("VONDI")
+    st.image('image\logo.png')
 
     # 데이터셋 로드
     df = pd.read_csv('datasets/student_data.csv')
