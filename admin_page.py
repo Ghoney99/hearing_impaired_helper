@@ -361,8 +361,23 @@ def show_database_management():
     
     # 쿼리 유형별 평균 실행 시간
     avg_query_time = query_performance.groupby('query')['execution_time'].mean().reset_index()
-    fig = px.bar(avg_query_time, x='query', y='execution_time', title="쿼리 유형별 평균 실행 시간")
+
+    # 가장 시간이 오래 걸리는 쿼리 찾기
+    max_time_query = avg_query_time.loc[avg_query_time['execution_time'].idxmax(), 'query']
+
+    # 색상 리스트 생성
+    colors = ['red' if query == max_time_query else 'blue' for query in avg_query_time['query']]
+
+    # 막대 그래프 생성
+    fig = go.Figure(data=[go.Bar(
+        x=avg_query_time['query'],
+        y=avg_query_time['execution_time'],
+        marker_color=colors
+    )])
+
+    # 레이아웃 설정
     fig.update_layout(
+        title="쿼리 유형별 평균 실행 시간",
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         font_color="#FFFFFF"
@@ -388,8 +403,23 @@ def show_security_status():
     
     # 로그인 성공/실패 비율
     login_status = login_attempts['status'].value_counts()
-    fig = px.pie(values=login_status.values, names=login_status.index, title="로그인 성공/실패 비율")
+
+    # 더 적은 비율을 가진 상태 찾기
+    min_status = login_status.idxmin()
+
+    # 색상 리스트 생성
+    colors = ['red' if status == min_status else 'blue' for status in login_status.index]
+
+    # 파이 차트 생성
+    fig = go.Figure(data=[go.Pie(
+        labels=login_status.index,
+        values=login_status.values,
+        marker=dict(colors=colors)
+    )])
+
+    # 레이아웃 설정
     fig.update_layout(
+        title="로그인 성공/실패 비율",
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         font_color="#FFFFFF"

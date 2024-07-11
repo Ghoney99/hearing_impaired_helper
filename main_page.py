@@ -28,8 +28,6 @@ from utils import get_session_state
 plt.rcParams['font.family'] ='Malgun Gothic'
 
 def score_plot(file_path, s_name):
-    st.title('학년별 성적 조회')
-
     df = pd.read_csv(file_path)
     student_name = s_name
 
