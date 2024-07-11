@@ -47,15 +47,21 @@ def main():
 
     with st.sidebar:
         st.image('image\logo.png')
-        choose = option_menu("VONDI", ['AI 속기사', '수어 번역', '수어 사전', '노트 필기'],
+        choose = option_menu(menu_title=None, options=['AI 속기사', '수어 번역', '수어 사전', '노트 필기'],
                             icons=['bi bi-card-text', 'bi bi-journal', 'bi bi-file-play'],
                             menu_icon="app-indicator", default_index=0,
-                            styles={
-            "container": {"padding": "5!important", "background-color": "#fafafa"},
-            "icon": {"color": "orange", "font-size": "25px"}, 
-            "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-            "nav-link-selected": {"background-color": "#02ab21"},
-        })
+                           styles={
+                    "container": {"padding": "5!important", "background-color": "#e6f2ff"},  # 연한 푸른색 배경
+                    "icon": {"color": "#0066cc", "font-size": "25px"},  # 아이콘 색상을 진한 푸른색으로
+                    "nav-link": {
+                        "font-size": "16px", 
+                        "text-align": "left", 
+                        "margin": "0px", 
+                        "--hover-color": "#99ccff",  # 호버 시 연한 푸른색
+                        "color": "#000033",  # 텍스트 색상을 진한 남색으로
+                    },
+                    "nav-link-selected": {"background-color": "#3399ff"},  # 선택된 항목 배경색을 중간 톤의 푸른색으로
+                })
         # 사이드바 맨 아래에 '나가기' 버튼 추가
         st.sidebar.markdown("<br>" * 10, unsafe_allow_html=True)  # 간격 추가
         if st.sidebar.button("나가기"):

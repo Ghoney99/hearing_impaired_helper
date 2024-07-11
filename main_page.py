@@ -147,16 +147,25 @@ def main(name):
     else:
         with st.sidebar:
             st.image('image\logo.png')
-            choose = option_menu("VONDI", ['마이페이지', "교과서"],
-                                icons=['house', 'bi bi-journals'],
-                                menu_icon="app-indicator", default_index=0,
-                                styles={
-                "container": {"padding": "5!important", "background-color": "#fafafa"},
-                "icon": {"color": "orange", "font-size": "25px"}, 
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-                "nav-link-selected": {"background-color": "#02ab21"},
-            })
-            
+            choose = option_menu(
+                menu_title=None,
+                options=['마이페이지', "교과서"],
+                icons=['house', 'bi bi-journals'],
+                menu_icon="app-indicator", 
+                default_index=0,
+                styles={
+                    "container": {"padding": "5!important", "background-color": "#e6f2ff"},  # 연한 푸른색 배경
+                    "icon": {"color": "#0066cc", "font-size": "25px"},  # 아이콘 색상을 진한 푸른색으로
+                    "nav-link": {
+                        "font-size": "16px", 
+                        "text-align": "left", 
+                        "margin": "0px", 
+                        "--hover-color": "#99ccff",  # 호버 시 연한 푸른색
+                        "color": "#000033",  # 텍스트 색상을 진한 남색으로
+                    },
+                    "nav-link-selected": {"background-color": "#3399ff"},  # 선택된 항목 배경색을 중간 톤의 푸른색으로
+                }
+            )
 
         # 상단 바
         col1, col2, col3 = st.columns([1,6,1])

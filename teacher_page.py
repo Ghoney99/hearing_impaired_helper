@@ -99,15 +99,21 @@ def main(teacher_name):
 
     with st.sidebar:
         st.image('image\logo.png')
-        choose = option_menu("메뉴", ["학생 관리", "성적 관리", "학사 일정", "학습 진도"],
+        choose = option_menu(menu_title=None, options=["학생 관리", "성적 관리", "학사 일정", "학습 진도"],
                              icons=['bi bi-people', 'bi bi-graph-up', 'bi bi-calendar', 'bi bi-book'],
                              default_index=0,
                              styles={
-                                 "container": {"padding": "5!important", "background-color": "#fafafa"},
-                                 "icon": {"color": "orange", "font-size": "25px"},
-                                 "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
-                                 "nav-link-selected": {"background-color": "#02ab21"},
-                             })
+                    "container": {"padding": "5!important", "background-color": "#e6f2ff"},  # 연한 푸른색 배경
+                    "icon": {"color": "#0066cc", "font-size": "25px"},  # 아이콘 색상을 진한 푸른색으로
+                    "nav-link": {
+                        "font-size": "16px", 
+                        "text-align": "left", 
+                        "margin": "0px", 
+                        "--hover-color": "#99ccff",  # 호버 시 연한 푸른색
+                        "color": "#000033",  # 텍스트 색상을 진한 남색으로
+                    },
+                    "nav-link-selected": {"background-color": "#3399ff"},  # 선택된 항목 배경색을 중간 톤의 푸른색으로
+                })
 
     # 학생 선택
     selected_student = st.selectbox("학생 선택", df['Name'].unique())

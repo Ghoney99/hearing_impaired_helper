@@ -20,17 +20,24 @@ def main(admin_name):
     
     with st.sidebar:
         st.image('image\logo.png')
-        choose = option_menu("VONDI", 
-                             ['종합', '서버 및 시스템', 'DB 관리', 'API 사용량', '보안 현황', '사용자 관리', '로그 분석'],
+        choose = option_menu(
+                menu_title=None, 
+                            options= ['종합', '서버 및 시스템', 'DB 관리', 'API 사용량', '보안 현황', '사용자 관리', '로그 분석'],
                              icons=['house', 'graph-up', 'pc-display', 'database', 'shield-lock', 'people', 'journal-text'],
                              menu_icon="app-indicator", 
                              default_index=0,
                              styles={
-                                 "container": {"padding": "5!important", "background-color": "#fafafa"},
-                                 "icon": {"color": "orange", "font-size": "25px"},
-                                 "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-                                 "nav-link-selected": {"background-color": "#02ab21"},
-                             }
+                    "container": {"padding": "5!important", "background-color": "#e6f2ff"},  # 연한 푸른색 배경
+                    "icon": {"color": "#0066cc", "font-size": "25px"},  # 아이콘 색상을 진한 푸른색으로
+                    "nav-link": {
+                        "font-size": "16px", 
+                        "text-align": "left", 
+                        "margin": "0px", 
+                        "--hover-color": "#99ccff",  # 호버 시 연한 푸른색
+                        "color": "#000033",  # 텍스트 색상을 진한 남색으로
+                    },
+                    "nav-link-selected": {"background-color": "#3399ff"},  # 선택된 항목 배경색을 중간 톤의 푸른색으로
+                }
         )
     
     if choose == '종합':
