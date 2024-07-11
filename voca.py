@@ -8,10 +8,10 @@ import speech_recognition as sr
 
 #####################################################################
 # 제목 : 수어 단어장
-# 수정 날짜 : 2024-07-02
+# 수정 날짜 : 2024-07-11
 # 작성자 : 장지헌
 # 수정자 : 장재혁
-# 수정 내용 : STT 삭제
+# 수정 내용 : title split 작업 및 대응어휘버튼  및 미구현 버튼 2개 추가
 #####################################################################
 
 def parse_response(response_text):
@@ -68,15 +68,57 @@ def main():
     results = get_video(text)
     
     if results:
-        for result in results:
-            title = result['title']
+        for i, result in enumerate(results):
+            full_title = result['title']
+            words = full_title.split(',')
+            main_title = words[0].strip()  # 첫 번째 단어를 메인 타이틀로 사용
             sub_description = result['sub_description']
             description = result['description']
             image_object = result['image_object']
             
-        # 카드 형태로 UI 구성하기
-        with st.expander(title):
-            st.image(image_object)  # 이미지를 표시하려면 이미지 경로나 이미지 자체를 전달합니다
-            st.markdown(f"설명 : {description}")
-            st.markdown(f"[{title}]({sub_description})")
+            # 각 결과에 대한 고유한 키 생성
+            key_base = f"{i}_{main_title}"
+            
+            # session_state를 사용하여 각 버튼의 상태 초기화
+            if f"대응표현_{key_base}" not in st.session_state:
+                st.session_state[f"대응표현_{key_base}"] = False
+            if f"추천어휘_{key_base}" not in st.session_state:
+                st.session_state[f"추천어휘_{key_base}"] = False
+            if f"필수어휘_{key_base}" not in st.session_state:
+                st.session_state[f"필수어휘_{key_base}"] = False
+            
+            # 카드 형태로 UI 구성하기
+            with st.expander(main_title):
+                st.image(image_object)  # 이미지를 표시
+                st.markdown(f"설명 : {description}")
+                st.markdown(f"[{main_title}]({sub_description})")
+                
+                # 버튼들 생성
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    if st.button("대응표현", key=f"대응표현_btn_{key_base}"):
+                        st.session_state[f"대응표현_{key_base}"] = not st.session_state[f"대응표현_{key_base}"]
+                
+                with col2:
+                    if st.button("추천어휘", key=f"추천어휘_btn_{key_base}"):
+                        st.session_state[f"추천어휘_{key_base}"] = not st.session_state[f"추천어휘_{key_base}"]
+                
+                with col3:
+                    if st.button("필수어휘", key=f"필수어휘_btn_{key_base}"):
+                        st.session_state[f"필수어휘_{key_base}"] = not st.session_state[f"필수어휘_{key_base}"]
+                
+                # 각 버튼의 내용 표시
+                if st.session_state[f"대응표현_{key_base}"] and len(words) > 1:
+                    st.write("대응표현:")
+                    for word in words[1:]:
+                        st.write(f"- {word.strip()}")
+                
+                if st.session_state[f"추천어휘_{key_base}"]:
+                    st.write("추천어휘: 미구현")
+                
+                if st.session_state[f"필수어휘_{key_base}"]:
+                    st.write("필수어휘: 미구현")
+
+#####################################################################
 #####################################################################
