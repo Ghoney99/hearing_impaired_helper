@@ -19,10 +19,11 @@ import matplotlib.pyplot as plt
 # #####################################################################
 
 # 파일불러오기
-import sub_page, ai_chatbot
+import sub_page, ai_chatbot, background
 
 # 페이지 전환
 from utils import get_session_state
+
 
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
@@ -137,16 +138,15 @@ def compare_grades(file_path, student_name):
 
 
 def main(name):
-    
-    st.set_page_config(layout="wide")
-
+    #오류나서 주석처리
+    #st.set_page_config(layout="wide")
     session_state = get_session_state(sub_page=False)
     
     if session_state.sub_page:
         sub_page.main()
     else:
         with st.sidebar:
-            st.image('image\logo.png')
+            st.image('image\타이틀.png')
             choose = option_menu(
                 menu_title=None,
                 options=['마이페이지', "교과서"],
@@ -167,151 +167,171 @@ def main(name):
                 }
             )
 
-        # 상단 바
-        col1, col2, col3 = st.columns([1,6,1])
-        with col1:
-            st.write(f"# {name} 😊")
-        with col2:
-            st.text_input("검색하세요", placeholder="검색어를 입력하세요")
-        with col3:
-            st.button("🔔")
+        # 상단 바 - 주석처리
+        # col1, col2, col3 = st.columns([1,6,1])
+        # with col1:
+        #     st.write(f"# {name} 😊")
+        # with col2:
+        #     st.text_input("검색하세요", placeholder="검색어를 입력하세요")
+        # with col3:
+        #     st.button("🔔")
 
     ############################################################################################################ 
     # 마이페이지
     ############################################################################################################  
         if choose == "마이페이지":
-            col1, col2, col3 = st.columns(3)
+            background.add_bg_from_url2()
+            # 주석처리
+            # col1, col2, col3 = st.columns(3)
             
-            with col1:
-                # 학년별 성적 조회
-                st.subheader("학년별 성적 조회")
-                score_plot('datasets/student_data.csv', name)
+            # with col1:
+            #     # 학년별 성적 조회
+            #     st.subheader("학년별 성적 조회")
+            #     score_plot('datasets/student_data.csv', name)
 
-            with col2:
-                # 부족한 과목 분석
-                st.subheader("부족한 과목 분석")
-                fig, ax = plt.subplots()
-                size = 0.3
-                vals = [40, 35, 25]
-                ax.pie(vals, labels=['국어', '수학', '과학'], radius=1, wedgeprops=dict(width=size, edgecolor='white'), colors=['#4e73df', '#1cc88a', '#36b9cc'])
-                ax.text(0, 0, "전과목", ha='center', va='center', fontsize=16)
-                st.pyplot(fig)
+            # with col2:
+            #     # 부족한 과목 분석
+            #     st.subheader("부족한 과목 분석")
+            #     fig, ax = plt.subplots()
+            #     size = 0.3
+            #     vals = [40, 35, 25]
+            #     ax.pie(vals, labels=['국어', '수학', '과학'], radius=1, wedgeprops=dict(width=size, edgecolor='white'), colors=['#4e73df', '#1cc88a', '#36b9cc'])
+            #     ax.text(0, 0, "전과목", ha='center', va='center', fontsize=16)
+            #     st.pyplot(fig)
 
-            with col3:
-                        # 선생님 1:1 문의
-                        st.subheader("선생님 1:1 문의")
-                        teachers = ['국어 선생님', '수학 선생님', '과학 선생님']
-                        for teacher in teachers:
-                            st.write(f"👩‍🏫 {teacher}")
+            # with col3:
+            #             # 선생님 1:1 문의
+            #             st.subheader("선생님 1:1 문의")
+            #             teachers = ['국어 선생님', '수학 선생님', '과학 선생님']
+            #             for teacher in teachers:
+            #                 st.write(f"👩‍🏫 {teacher}")
 
-                        # 오늘의 할 일 (선생님 1:1 문의 아래에 배치)
-                        st.subheader("오늘의 할 일")
-                        tasks = [
-                            "4/24 발표대회 주제 정하기",
-                            "4/24 발표대회 주제 정하기",
-                            "4/24 발표대회 주제 정하기",
-                            "4/24 발표대회 주제 정하기",
-                            "4/26 발표대회 주제 정하기"
-                        ]
-                        for i, task in enumerate(tasks):
-                            if i < 2:
-                                st.write(f"✅ {task}")
-                            elif i < 4:
-                                st.write(f"⭐ {task}")
-                            else:
-                                st.write(f"🌟 {task}")
+            #             # 오늘의 할 일 (선생님 1:1 문의 아래에 배치)
+            #             st.subheader("오늘의 할 일")
+            #             tasks = [
+            #                 "4/24 발표대회 주제 정하기",
+            #                 "4/24 발표대회 주제 정하기",
+            #                 "4/24 발표대회 주제 정하기",
+            #                 "4/24 발표대회 주제 정하기",
+            #                 "4/26 발표대회 주제 정하기"
+            #             ]
+            #             for i, task in enumerate(tasks):
+            #                 if i < 2:
+            #                     st.write(f"✅ {task}")
+            #                 elif i < 4:
+            #                     st.write(f"⭐ {task}")
+            #                 else:
+            #                     st.write(f"🌟 {task}")
 
-                        # 공지사항 (오늘의 할 일 아래에 배치)
-                        st.subheader("공지사항")
-                        notices = [
-                            "5/1 어린이날 행사 안내",
-                            "5/10 학부모 상담 주간",
-                            "5/15 봄 소풍 예정"
-                        ]
-                        for notice in notices:
-                            st.write(f"📢 {notice}")
+            #             # 공지사항 (오늘의 할 일 아래에 배치)
+            #             st.subheader("공지사항")
+            #             notices = [
+            #                 "5/1 어린이날 행사 안내",
+            #                 "5/10 학부모 상담 주간",
+            #                 "5/15 봄 소풍 예정"
+            #             ]
+            #             for notice in notices:
+            #                 st.write(f"📢 {notice}")
 
-            col4, col5, col6 = st.columns(3)
+            # col4, col5, col6 = st.columns(3)
 
-            with col4:
-                # 과목별 부족한 유형 분석
-                st.subheader("과목별 부족한 유형 분석")
-                subjects_data = {
-                    "국어": {"글쓰기": 41, "말하기": 46, "독해": 13},
-                    "수학": {"공간기하": 47, "논리력": 16, "분수": 37},
-                    "과학": {"탐구력": 44, "과학실험": 20, "주제력": 36}
-                }
+            # with col4:
+            #     # 과목별 부족한 유형 분석
+            #     st.subheader("과목별 부족한 유형 분석")
+            #     subjects_data = {
+            #         "국어": {"글쓰기": 41, "말하기": 46, "독해": 13},
+            #         "수학": {"공간기하": 47, "논리력": 16, "분수": 37},
+            #         "과학": {"탐구력": 44, "과학실험": 20, "주제력": 36}
+            #     }
                 
-                subject_cols = st.columns(3)
-                for i, (subject, data) in enumerate(subjects_data.items()):
-                    with subject_cols[i]:
-                        st.write(f"### {subject}")
-                        fig, ax = plt.subplots(figsize=(3, 3))  # 그래프 크기 조정
-                        colors = ['#8e5ea2', '#3cba9f', '#e8c3b9']
-                        ax.pie(data.values(), labels=data.keys(), colors=colors, autopct='%1.1f%%')
-                        st.pyplot(fig)
+            #     subject_cols = st.columns(3)
+            #     for i, (subject, data) in enumerate(subjects_data.items()):
+            #         with subject_cols[i]:
+            #             st.write(f"### {subject}")
+            #             fig, ax = plt.subplots(figsize=(3, 3))  # 그래프 크기 조정
+            #             colors = ['#8e5ea2', '#3cba9f', '#e8c3b9']
+            #             ax.pie(data.values(), labels=data.keys(), colors=colors, autopct='%1.1f%%')
+            #             st.pyplot(fig)
 
-            with col5:
-                # 작년 성적과 현 학년 성적 비교
-                st.subheader("학년별 과목 성적 비교")
-                comparison_fig = compare_grades('datasets/student_data.csv', name)
-                st.pyplot(comparison_fig)
+            # with col5:
+            #     # 작년 성적과 현 학년 성적 비교
+            #     st.subheader("학년별 과목 성적 비교")
+            #     comparison_fig = compare_grades('datasets/student_data.csv', name)
+            #     st.pyplot(comparison_fig)
 
-            with col6:
-                pass
+            # with col6:
+            #     pass
 
     ############################################################################################################ 
     # 교과서
     ############################################################################################################       
         elif choose == "교과서": 
+            background.add_bg_from_url3()
             
-            info_col1, info_col2, info_col3 = st.columns(3)
-            with info_col1:
-                st.markdown("""
-                <div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>
-                    <h3 style='color: green;'>✏️ 국어</h3>
-                    <p>▲ 수업시간: 금요일 2교시</p>
-                </div>
-                """, unsafe_allow_html=True)
-            with info_col2:
-                st.markdown("""
-                <div style='background-color: #e6f3ff; padding: 10px; border-radius: 10px;'>
-                    <h3 style='color: blue;'>📋 받아쓰기</h3>
-                    <p>▲ 4월 26일까지</p>
-                </div>
-                """, unsafe_allow_html=True)
-            with info_col3:
-                st.markdown("""
-                <div style='background-color: #ffe6f3; padding: 10px; border-radius: 10px;'>
-                    <h3 style='color: purple;'>📅 운동회</h3>
-                    <p>▲ 4월 30일</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            # 세 개의 컬럼 만들기
-            col1, col2, col3 = st.columns(3)
-
-            # 첫 번째 컬럼에 이미지와 텍스트, 버튼 추가
-            with col1:
-                st.image("image\국어표지1.png", caption="국어")
-                st.text("국어")
+            st.title('')
+            st.title('')
+            st.title('')
+            st.text('')
+            st.text('')
+            empty, con1, con2, con3 = st.columns([0.12,0.11,0.11,0.15])
+            with empty:
+                pass
+            with con1:
                 if st.button("국어"):
                     session_state.sub_page = True
                     st.experimental_rerun()  # 페이지 리로드
+            with con2:
+                st.button("수학")
+            with con3:
+                st.button("수학익힘")
+            # 주석처리
+            # info_col1, info_col2, info_col3 = st.columns(3)
+            # with info_col1:
+            #     st.markdown("""
+            #     <div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>
+            #         <h3 style='color: green;'>✏️ 국어</h3>
+            #         <p>▲ 수업시간: 금요일 2교시</p>
+            #     </div>
+            #     """, unsafe_allow_html=True)
+            # with info_col2:
+            #     st.markdown("""
+            #     <div style='background-color: #e6f3ff; padding: 10px; border-radius: 10px;'>
+            #         <h3 style='color: blue;'>📋 받아쓰기</h3>
+            #         <p>▲ 4월 26일까지</p>
+            #     </div>
+            #     """, unsafe_allow_html=True)
+            # with info_col3:
+            #     st.markdown("""
+            #     <div style='background-color: #ffe6f3; padding: 10px; border-radius: 10px;'>
+            #         <h3 style='color: purple;'>📅 운동회</h3>
+            #         <p>▲ 4월 30일</p>
+            #     </div>
+            #     """, unsafe_allow_html=True)
+                
+            # # 세 개의 컬럼 만들기
+            # col1, col2, col3 = st.columns(3)
 
-            # 두 번째 컬럼에 이미지와 텍스트, 버튼 추가
-            with col2:
-                st.image("image\수학표지1.png", caption="수학")
-                st.text("수학")
-                if st.button("수학"):
-                    st.write("수학 버튼을 눌렀습니다.")
+            # # 첫 번째 컬럼에 이미지와 텍스트, 버튼 추가
+            # with col1:
+            #     st.image("image\국어표지1.png", caption="국어")
+            #     st.text("국어")
+            #     if st.button("국어"):
+            #         session_state.sub_page = True
+            #         st.experimental_rerun()  # 페이지 리로드
 
-            # 세 번째 컬럼에 이미지와 텍스트, 버튼 추가
-            with col3:
-                st.image("image\영어표지1.jpg", caption="영어")
-                st.text("영어")
-                if st.button("영어"):
-                    st.write("영어 버튼을 눌렀습니다.")
+            # # 두 번째 컬럼에 이미지와 텍스트, 버튼 추가
+            # with col2:
+            #     st.image("image\수학표지1.png", caption="수학")
+            #     st.text("수학")
+            #     if st.button("수학"):
+            #         st.write("수학 버튼을 눌렀습니다.")
+
+            # # 세 번째 컬럼에 이미지와 텍스트, 버튼 추가
+            # with col3:
+            #     st.image("image\영어표지1.jpg", caption="영어")
+            #     st.text("영어")
+            #     if st.button("영어"):
+            #         st.write("영어 버튼을 눌렀습니다.")
         else:
             sub_page.main()
 
