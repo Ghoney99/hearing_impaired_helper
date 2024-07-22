@@ -5,19 +5,20 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import numpy as np
 from streamlit_option_menu import option_menu
+import background
 
 #####################################################################
 # 제목 : 관리자 페이지
-# 수정 날짜 : 2024-07-10
+# 수정 날짜 : 2024-07-22
 # 작성자 : 장지헌
 # 수정자 : 장지헌
-# 수정 내용 : 관리자 페이지 완성
+# 수정 내용 : 관리자 페이지 background 추가
 #####################################################################
 
 
 def main(admin_name):
-    st.set_page_config(layout="wide", page_title="관리자 대시보드", page_icon="🔐")
-    
+    # st.set_page_config(layout="wide", page_title="관리자 대시보드", page_icon="🔐")
+    background.add_bg_from_url_admin()
     with st.sidebar:
         st.image('image\logo.png')
         choose = option_menu(
@@ -80,10 +81,9 @@ def show_dashboard():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.subheader("CPU 사용률")
         fig = go.Figure(go.Indicator(
             mode = "gauge+number",
-            value = 57,
+            value = 45,
             title = {'text': "CPU 사용률 (%)"},
             gauge = {
                 'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
@@ -103,15 +103,14 @@ def show_dashboard():
                 }
             }
         ))
-        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#FFFFFF")
+        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#000000")
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-        st.subheader("트래픽")
         fig = go.Figure(go.Indicator(
             mode = "gauge+number",
             value = 67,
-            title = {'text': "CPU 사용률 (%)"},
+            title = {'text': "트래픽 (%)"},
             gauge = {
                 'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
                 'bar': {'color': "royalblue"},
@@ -130,15 +129,14 @@ def show_dashboard():
                 }
             }
         ))
-        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#FFFFFF")
+        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#000000")
         st.plotly_chart(fig, use_container_width=True)
         
     with col3:
-        st.subheader("메모리 사용량")
         fig = go.Figure(go.Indicator(
             mode = "gauge+number",
             value = 50,
-            title = {'text': "CPU 사용률 (%)"},
+            title = {'text': "메모리 사용량 (%)"},
             gauge = {
                 'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
                 'bar': {'color': "royalblue"},
@@ -157,7 +155,7 @@ def show_dashboard():
                 }
             }
         ))
-        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#FFFFFF")
+        fig.update_layout(height=200, margin=dict(l=10, r=10, t=50, b=10), paper_bgcolor="rgba(0,0,0,0)", font_color="#000000")
         st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("API 사용량")
@@ -290,7 +288,7 @@ def show_system_performance():
         fig.update_layout(
             plot_bgcolor="rgba(0,0,0,0)",
             paper_bgcolor="rgba(0,0,0,0)",
-            font_color="#FFFFFF"
+            font_color="#000000"
         )
         st.plotly_chart(fig, use_container_width=True)
         st.header('서버 핑')
@@ -311,7 +309,7 @@ def show_system_performance():
         fig.update_layout(
             plot_bgcolor="rgba(0,0,0,0)",
             paper_bgcolor="rgba(0,0,0,0)",
-            font_color="#FFFFFF"
+            font_color="#000000"
         )
         st.plotly_chart(fig, use_container_width=True)
         st.header('CPU 사용률')

@@ -2,10 +2,10 @@ import streamlit as st
 
 # #####################################################################
 # # 제목 : 배경
-# # 수정 날짜 : 2024-07-16
+# # 수정 날짜 : 2024-07-22
 # # 작성자 : 장재혁
-# # 수정자 : 장재혁
-# # 수정 내용 : 배경설정
+# # 수정자 : 장지헌
+# # 수정 내용 : admin페이지 함수 생성
 # #####################################################################
 
 # 로그인페이지
@@ -95,6 +95,23 @@ def add_bg_from_url6():
          <style>
          .stApp {{
              background-image: url("https://i.imgur.com/exe5Xyn.png?1");
+             background-attachment: fixed;
+             background-size: auto
+             
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+# admin페이지
+def add_bg_from_url_admin():
+    from streamlit_extras.stylable_container import stylable_container
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://e1.pxfuel.com/desktop-wallpaper/225/563/desktop-wallpaper-9-white-backgrounds-iphone-white.jpg");
              background-attachment: fixed;
              background-size: auto
              

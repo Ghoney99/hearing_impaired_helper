@@ -146,7 +146,7 @@ def main(name):
         sub_page.main()
     else:
         with st.sidebar:
-            st.image('image\타이틀.png')
+            st.image('image\logo.png')
             choose = option_menu(
                 menu_title=None,
                 options=['마이페이지', "교과서"],
