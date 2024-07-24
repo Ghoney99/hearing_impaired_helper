@@ -6,42 +6,28 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.probability import FreqDist
 from heapq import nlargest
 
-# #####################################################################
-# # 제목 : AI 비서
-# # 수정 날짜 : 2024-07-11
-# # 작성자 : 장재혁
-# # 수정자 : 장지헌
-# # 수정 내용 : 강의록 요약 및 알림장 기능 추가
-# #####################################################################
+#####################################################################
+# 제목 : AI 비서
+# 수정 날짜 : 2024-07-24
+# 작성자 : 장재혁
+# 수정자 : 장지헌
+# 수정 내용 : 챗봇 스타일 변경
+#####################################################################
 
+# NLTK 데이터 다운로드 (처음 실행 시 한 번만 필요)
+nltk.download('punkt')
+nltk.download('stopwords')
 
-# # NLTK 데이터 다운로드 (처음 실행 시 한 번만 필요)
-# nltk.download('punkt')
-# nltk.download('stopwords')
-
-# 파일을 읽어 내용을 반환하는 함수
-# 매개변수: file_path (str): 파일 경로
-# 반환값: str: 파일 내용
 def read_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return file.read()
 
-# 텍스트를 요약하는 함수
-# 매개변수: text (str): 요약할 텍스트, num_sentences (int): 요약 문장 수
-# 반환값: str: 요약된 텍스트
 def summarize_text(text, num_sentences=3):
-    # 문장 토큰화
     sentences = sent_tokenize(text)
-    
-    # 불용어 제거 및 단어 토큰화
-    stop_words = set(stopwords.words('english'))  # 한국어 불용어 목록이 없으므로 영어로 대체
+    stop_words = set(stopwords.words('english'))
     words = word_tokenize(text.lower())
     words = [word for word in words if word.isalnum() and word not in stop_words]
-    
-    # 단어 빈도 계산
     freq = FreqDist(words)
-    
-    # 문장 점수 계산
     ranking = {}
     for i, sentence in enumerate(sentences):
         for word in word_tokenize(sentence.lower()):
@@ -50,17 +36,9 @@ def summarize_text(text, num_sentences=3):
                     ranking[i] += freq[word]
                 else:
                     ranking[i] = freq[word]
-    
-    # 상위 n개 문장 선택
     indexes = nlargest(num_sentences, ranking, key=ranking.get)
-    
-    # 선택된 문장들을 원래 순서대로 정렬
     return ' '.join([sentences[j] for j in sorted(indexes)])
 
-
-# 텍스트에서 강의와 숙제 부분을 추출하는 함수
-# 매개변수: text (str): 전체 텍스트
-# 반환값: tuple: (강의 내용, 숙제 내용)
 def extract_content(text):
     homework_start = text.find("숙제")
     if homework_start == -1:
@@ -70,52 +48,87 @@ def extract_content(text):
     return lecture, homework
 
 def main():
-    st.title("AI 비서")
-    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+    # st.set_page_config(page_title="AI비서 본디", layout="wide")
     
+    st.markdown("""
+    <style>
+    .stApp {
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+    }
+    .chat-message {
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .chat-message.user {
+        background-color: #e6f3ff;
+    }
+    .chat-message.bot {
+        background-color: #f0f0f0;
+    }
+    .chat-icon {
+        width: 50px;
+        height: 50px;
+        margin-right: 1rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.title("AI 비서")
+
+    # OPENAI_API_KEY 만료
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = "ft:gpt-3.5-turbo-0125:personal::9evZE1BR"
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # 요약 기능 추가
-    col1, col2 = st.columns(2)
-
-    # 파일에서 텍스트 읽기
-    file_path = "text\lecture3.txt"
-    with open(file_path, 'r', encoding='utf-8') as file:
-        text = file.read()
-
-    # 강의와 숙제 부분 추출
+    file_path = "text/lecture3.txt"
+    text = read_file(file_path)
     lecture_text, homework_text = extract_content(text)
 
-    
-    with col1:
-        if st.button("강의 내용 요약"):
-            lecture_summary = summarize_text(lecture_text, num_sentences=3)
-            st.write(lecture_summary)
-
-    with col2:
-        if st.button("알림장"):
-            homework_summary = summarize_text(homework_text, num_sentences=3) if homework_text else "숙제 내용이 없습니다."
-            st.write(homework_summary)
-
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        with st.container():
+            st.markdown(f"""
+            <div class="chat-message {'user' if message['role'] == 'user' else 'bot'}">
+                <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" class="chat-icon">
+                <div>{message['content']}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-    if prompt := st.chat_input("What is up?"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        with st.chat_message("assistant"):
-            stream = client.chat.completions.create(
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("수업 내용 요약"):
+            lecture_summary = summarize_text(lecture_text, num_sentences=3)
+            st.session_state.messages.append({"role": "assistant", "content": lecture_summary})
+            st.experimental_rerun()
+    with col2:
+        if st.button("똑똑한 알림장"):
+            homework_summary = summarize_text(homework_text, num_sentences=3) if homework_text else "숙제 내용이 없습니다."
+            st.session_state.messages.append({"role": "assistant", "content": homework_summary})
+            st.experimental_rerun()
+    with col3:
+        if st.button("모르는 내용 질문하기"):
+            st.session_state.messages.append({"role": "assistant", "content": "무엇이 궁금하신가요? 질문해 주세요."})
+            st.experimental_rerun()
+
+    user_input = st.text_input("무엇을 도와드릴까요?", key="user_input")
+
+    if user_input:
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.spinner("답변 생성 중..."):
+            response = client.chat.completions.create(
                 model=st.session_state["openai_model"],
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ],
+                messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
                 stream=True,
             )
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            response_content = ""
+            for chunk in response:
+                if chunk.choices[0].delta.content is not None:
+                    response_content += chunk.choices[0].delta.content
+            st.session_state.messages.append({"role": "assistant", "content": response_content})
+        st.experimental_rerun()
