@@ -1,0 +1,15 @@
+streamlit
+pandas
+plotly
+numpy
+streamlit-option-menu
+openai
+nltk
+Pillow
+tensorflow
+opencv-python
+mediapipe
+matplotlib
+SpeechRecognition
+streamlit-calendar
+requests

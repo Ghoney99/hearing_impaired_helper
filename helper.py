@@ -11,10 +11,10 @@ import numpy as np
 
 #####################################################################
 # 제목 : 수어 번역
-# 수정 날짜 : 2024-07-10
+# 수정 날짜 : 2024-07-16
 # 작성자 : 장지헌
-# 수정자 : 장지헌
-# 수정 내용 : 수어 스트림릿에 출력
+# 수정자 : 장재혁
+# 수정 내용 : 타이틀메세지 빼고 버튼텍스트 변경
 #####################################################################
 
 # 수어 인식 -> 자모음 병합
@@ -40,7 +40,6 @@ def add_unique_element(lst, element):
 result_word = ''
 
 def main():
-    st.title("수어 번역")
     
     fontpath = "fonts/HMKMMAG.TTF"
     font = ImageFont.truetype(fontpath, 40)
@@ -62,7 +61,7 @@ def main():
     detector = hm.HolisticDetector(min_detection_confidence=0.3)
 
     # 'Run Gesture Recognition' 버튼 클릭 시 동작
-    if st.button('번역'):
+    if st.button('수어 번역'):
         result_word = ''
 
         # 카메라 캡처 시작

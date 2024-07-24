@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import io
-from tkinter.tix import COLUMN
+# from tkinter.tix import COLUMN
 from pyparsing import empty
 import matplotlib.pyplot as plt
 from openai import OpenAI
@@ -14,14 +14,14 @@ import speech_recognition as sr
 
 # #####################################################################
 # # 제목 : 서브 페이지
-# # 수정 날짜 : 2024-07-10
+# # 수정 날짜 : 2024-07-16
 # # 작성자 : 장재혁
-# # 수정자 : 장지헌
-# # 수정 내용 : 교과서 영역 레이아웃
+# # 수정자 : 장재혁
+# # 수정 내용 : 배경 넣고 요소들 삭제
 # #####################################################################
 
 # 파일 불러오기
-import stt, voca, helper, ai_chatbot
+import stt, voca, helper, ai_chatbot, background
 
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
@@ -44,10 +44,11 @@ def speech_to_text(recognizer):
 
 def main():
     # st.set_page_config(layout="wide")
+    background.add_bg_from_url4()
 
     with st.sidebar:
         st.image('image\logo.png')
-        choose = option_menu(menu_title=None, options=['AI 속기사', '수어 번역', '수어 사전', '노트 필기'],
+        choose = option_menu(menu_title=None, options=['AI 속기사', '수어 번역', '수어 사전', 'AI비서'],
                             icons=['bi bi-card-text', 'bi bi-journal', 'bi bi-file-play'],
                             menu_icon="app-indicator", default_index=0,
                            styles={
@@ -83,42 +84,27 @@ def main():
     #         stt.main()
 
     if choose == "AI 속기사":
-        col1, col2 = st.columns([2, 1])
-        
-        with col1:
-            st.image("image\국어내용.png", caption="국어")
-            if st.button("자막"):
-                result = speech_to_text(recognizer)
-                
-        with col2:
-            ai_chatbot.main()
+        st.title('')
+        st.title('')
+        st.title('')
+        st.title('')
+        st.title('')
+
+
+        if st.button("자막"):
+            result = speech_to_text(recognizer)
             
     elif choose == "수어 번역":
-        col1, col2 = st.columns([2, 1])
-        
-        with col1:
-            st.image("image\국어내용.png", caption="국어")
-            helper.main()
-                
-        with col2:
-            ai_chatbot.main()
+        helper.main()
             
     elif choose == "수어 사전":
-        col1, col2 = st.columns([2, 1])
+        # 배경
+        background.add_bg_from_url6()
         
-        with col1:
-            st.image("image\국어내용.png", caption="국어")
-            voca.main()
+        voca.main()
             
-        with col2:
-            ai_chatbot.main()
-            
-    elif choose == "노트 필기":
-        col1, col2 = st.columns([2, 1])
+    elif choose == "AI비서":
+        # 배경
+        background.add_bg_from_url5()
         
-        with col1:
-            st.image("image\국어내용.png", caption="국어")
-            # 노트 필기 함수 추가
-            
-        with col2:
-            ai_chatbot.main()
+        ai_chatbot.main()

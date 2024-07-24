@@ -7,15 +7,15 @@ from streamlit_calendar import calendar
 
 # #####################################################################
 # # 제목 : 선생님 페이지
-# # 수정 날짜 : 2024-07-01
+# # 수정 날짜 : 2024-07-16
 # # 작성자 : 장지헌
-# # 수정자 : 장지헌
-# # 수정 내용 : .. 수정중
+# # 수정자 : 장재혁
+# # 수정 내용 : 오류 부분 주석처리
 # #####################################################################
 
 plt.rcParams['font.family'] = 'Malgun Gothic'
-
-st.set_page_config(layout="wide")
+#오류나서 주석처리
+#st.set_page_config(layout="wide")
 
 def score_plot(file_path, student_name):
     st.title(f'{student_name}의 학년별 성적 조회')
