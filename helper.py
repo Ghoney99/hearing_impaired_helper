@@ -142,7 +142,7 @@ def main():
                 cv2.imshow('img', img)
                 key = cv2.waitKey(70) & 0xFF
                 if key == 27:  # 'esc' 키를 누르면
-                    st.subheader(result_word)
+                    # st.subheader(result_word)
                     break
 
     # 카메라와 윈도우를 정리
