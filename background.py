@@ -94,7 +94,11 @@ def add_bg_from_url6():
          f"""
          <style>
          .stApp {{
+<<<<<<< Updated upstream
              background-image: url("https://i.imgur.com/eH6IZeU.png?1");
+=======
+             background-image: url("https://i.imgur.com/au1hzye.png");
+>>>>>>> Stashed changes
              background-attachment: fixed;
              background-size: auto
              
