@@ -14,6 +14,9 @@ import speech_recognition as sr
 # 수정 내용 : 구조 오른쪽으로 옮김
 #####################################################################
 
+# API 응답을 파싱하여 필요한 정보를 추출하는 함수
+#매개변수 : response_text (str): API로부터 받은 XML 형식의 응답 텍스트
+#반환값 : list: 파싱된 결과를 담은 딕셔너리들의 리스트
 def parse_response(response_text):
     root = ET.fromstring(response_text)
     
@@ -35,7 +38,9 @@ def parse_response(response_text):
     
     return results
 
-# 수어 단어장 -> API 처리 
+# 주어진 키워드로 수어 관련 정보를 API에서 가져오는 함수
+# 매개변수 : keyword (str): 검색할 키워드
+# 반환값 : list 또는 None: API 호출 성공 시 파싱된 결과 리스트, 실패 시 None
 def get_video(keyword):
     base_url = "http://api.kcisa.kr/API_CNV_054/request"
     params = {
@@ -124,6 +129,3 @@ def main():
                     
                     if st.session_state[f"필수어휘_{key_base}"]:
                         st.write("필수어휘: 미구현")
-                        
-#####################################################################
-#####################################################################

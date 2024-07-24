@@ -1,4 +1,5 @@
 import streamlit as st
+
 # 수어 인식 모델 라이브러리
 from modules.utils import Vector_Normalization
 from PIL import ImageFont, ImageDraw, Image
@@ -17,7 +18,10 @@ import numpy as np
 # 수정 내용 : 타이틀메세지 빼고 버튼텍스트 변경
 #####################################################################
 
-# 수어 인식 -> 자모음 병합
+
+# 자모음을 병합하는 함수
+# 매개변수: jamo (str): 자모음 문자열
+# 반환값: str: 병합된 문자열
 def jamo_trans(jamo):
 
     chars = list(set(jamo))
@@ -30,7 +34,10 @@ def jamo_trans(jamo):
     restored_text = join_jamos(restored_jamo)
     return restored_text
 
-# 수어 인식 -> 리스트 추가 함수
+
+# 리스트에 고유한 요소를 추가하는 함수
+# 매개변수: lst (list): 대상 리스트, element: 추가할 요소
+# 반환값: list: 업데이트된 리스트
 def add_unique_element(lst, element):
     if not lst or lst[-1] != element:
         lst.append(element)
@@ -138,6 +145,3 @@ def main():
     if cap:
         cap.release()
     cv2.destroyAllWindows()
-
-
-#####################################################################

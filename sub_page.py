@@ -1,32 +1,25 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import streamlit.components.v1 as html
-from PIL import Image
-import numpy as np
-import pandas as pd
-import plotly.express as px
-import io
-# from tkinter.tix import COLUMN
-from pyparsing import empty
 import matplotlib.pyplot as plt
-from openai import OpenAI
 import speech_recognition as sr
+from openai import OpenAI
+import voca, helper, ai_chatbot, background
 
-# #####################################################################
-# # 제목 : 서브 페이지
-# # 수정 날짜 : 2024-07-16
-# # 작성자 : 장재혁
-# # 수정자 : 장재혁
-# # 수정 내용 : 배경 넣고 요소들 삭제
-# #####################################################################
-
-# 파일 불러오기
-import stt, voca, helper, ai_chatbot, background
+#####################################################################
+# 제목 : 서브 페이지
+# 수정 날짜 : 2024-07-24
+# 작성자 : 장재혁
+# 수정자 : 장지헌
+# 수정 내용 : 라이브러리 정리
+#####################################################################
 
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
 
-# STT 함수
+
+# STT 함수 / 음성을 텍스트로 변환하는 함수
+# 매개변수: recognizer (speech_recognition.Recognizer): 음성 인식기 객체
+# 반환값: str 또는 None: 인식된 텍스트 또는 인식 실패 시 None
 def speech_to_text(recognizer):
     with sr.Microphone() as source:
         # st.write("[자막]")

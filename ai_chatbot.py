@@ -1,9 +1,9 @@
 import streamlit as st
 from openai import OpenAI
-import nltk # New!!
-from nltk.corpus import stopwords # New!!
-from nltk.tokenize import sent_tokenize, word_tokenize # New!!
-from nltk.probability import FreqDist # New!!
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.probability import FreqDist
 from heapq import nlargest
 
 # #####################################################################
@@ -19,10 +19,16 @@ from heapq import nlargest
 # nltk.download('punkt')
 # nltk.download('stopwords')
 
+# 파일을 읽어 내용을 반환하는 함수
+# 매개변수: file_path (str): 파일 경로
+# 반환값: str: 파일 내용
 def read_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return file.read()
 
+# 텍스트를 요약하는 함수
+# 매개변수: text (str): 요약할 텍스트, num_sentences (int): 요약 문장 수
+# 반환값: str: 요약된 텍스트
 def summarize_text(text, num_sentences=3):
     # 문장 토큰화
     sentences = sent_tokenize(text)
@@ -51,6 +57,10 @@ def summarize_text(text, num_sentences=3):
     # 선택된 문장들을 원래 순서대로 정렬
     return ' '.join([sentences[j] for j in sorted(indexes)])
 
+
+# 텍스트에서 강의와 숙제 부분을 추출하는 함수
+# 매개변수: text (str): 전체 텍스트
+# 반환값: tuple: (강의 내용, 숙제 내용)
 def extract_content(text):
     homework_start = text.find("숙제")
     if homework_start == -1:

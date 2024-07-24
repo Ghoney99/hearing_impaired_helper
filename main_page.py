@@ -1,15 +1,16 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import streamlit.components.v1 as html
-from PIL import Image
-import numpy as np
-import pandas as pd
-import plotly.express as px
-import io
-from tkinter.tix import COLUMN
-from pyparsing import empty
 import matplotlib.pyplot as plt
+import speech_recognition as sr
+import pandas as pd
 
+import stt, voca, helper, ai_chatbot, background, sub_page
+# import plotly.express as px
+# import io
+# from pyparsing import empty
+# import streamlit.components.v1 as html
+# from PIL import Image
+# import numpy as np
 # #####################################################################
 # # 제목 : 메인 페이지
 # # 수정 날짜 : 2024-07-10
@@ -18,8 +19,7 @@ import matplotlib.pyplot as plt
 # # 수정 내용 : 사이드바 제목 수정 및 기능 추가
 # #####################################################################
 
-# 파일불러오기
-import sub_page, ai_chatbot, background
+
 
 # 페이지 전환
 from utils import get_session_state
@@ -28,6 +28,10 @@ from utils import get_session_state
 # 글꼴 설정
 plt.rcParams['font.family'] ='Malgun Gothic'
 
+
+# 학생의 학년별 성적을 그래프로 표시하는 함수
+# 매개변수: file_path (str): CSV 파일 경로, s_name (str): 학생 이름
+# 반환값: None (그래프를 Streamlit에 직접 표시)
 def score_plot(file_path, s_name):
     df = pd.read_csv(file_path)
     student_name = s_name
@@ -66,6 +70,10 @@ def score_plot(file_path, s_name):
         plt.legend()
         st.pyplot(plt)
         
+        
+# 학생의 현재 학년과 이전 학년의 성적을 비교하는 그래프를 생성하는 함수
+# 매개변수: file_path (str): CSV 파일 경로, student_name (str): 학생 이름
+# 반환값: fig (matplotlib.figure.Figure): 생성된 그래프 객체
 def compare_grades(file_path, student_name):
     # 데이터 로드
     df = pd.read_csv(file_path)

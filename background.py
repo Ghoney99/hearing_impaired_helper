@@ -103,11 +103,9 @@ def add_bg_from_url6():
          """,
          unsafe_allow_html=True
      )
-# "https://i.imgur.com/exe5Xyn.png?1"
 
 # admin페이지
 def add_bg_from_url_admin():
-    from streamlit_extras.stylable_container import stylable_container
     st.markdown(
          f"""
          <style>

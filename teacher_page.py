@@ -5,19 +5,23 @@ import numpy as np
 from streamlit_option_menu import option_menu
 from streamlit_calendar import calendar
 
-# #####################################################################
-# # 제목 : 선생님 페이지
-# # 수정 날짜 : 2024-07-16
-# # 작성자 : 장지헌
-# # 수정자 : 장재혁
-# # 수정 내용 : 오류 부분 주석처리
-# #####################################################################
+#####################################################################
+# 제목 : 선생님 페이지
+# 수정 날짜 : 2024-07-16
+# 작성자 : 장지헌
+# 수정자 : 장재혁
+# 수정 내용 : 오류 부분 주석처리
+#####################################################################
 
 plt.rcParams['font.family'] = 'Malgun Gothic'
-#오류나서 주석처리
+
 #st.set_page_config(layout="wide")
 
+# 학생의 학년별 성적을 그래프로 표시하는 함수
+# 매개변수: file_path (str): CSV 파일 경로, student_name (str): 학생 이름
+# 반환값: None (그래프를 Streamlit에 직접 표시)
 def score_plot(file_path, student_name):
+    
     st.title(f'{student_name}의 학년별 성적 조회')
 
     df = pd.read_csv(file_path)
@@ -56,6 +60,10 @@ def score_plot(file_path, student_name):
         plt.legend()
         st.pyplot(plt)
 
+
+# 학생의 현재 학년과 이전 학년의 성적을 비교하는 그래프를 생성하는 함수
+# 매개변수: file_path (str): CSV 파일 경로, student_name (str): 학생 이름
+# 반환값: fig (matplotlib.figure.Figure): 생성된 그래프 객체
 def compare_grades(file_path, student_name):
     # 데이터 로드
     df = pd.read_csv(file_path)
