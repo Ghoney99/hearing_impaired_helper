@@ -1,6 +1,6 @@
 # VONDI: 청각장애 학생을 위한 AI 디지털교과서 기반 학습 보조 솔루션
 
-![VONDI Logo]([path_to_logo_image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdYqpJW%2FbtsI5zeSeDL%2FMCxKkLYZQwwkQvZEtaG65k%2Fimg.png))
+![VONDI 로고](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdYqpJW%2FbtsI5zeSeDL%2FMCxKkLYZQwwkQvZEtaG65k%2Fimg.png)
 
 ## 📋 프로젝트 개요
 
