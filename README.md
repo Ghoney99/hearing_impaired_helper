@@ -1,6 +1,6 @@
 # VONDI: 청각장애 학생을 위한 AI 디지털교과서 기반 학습 보조 솔루션
 
-![VONDI Logo](path_to_logo_image)
+![VONDI Logo]([path_to_logo_image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdYqpJW%2FbtsI5zeSeDL%2FMCxKkLYZQwwkQvZEtaG65k%2Fimg.png))
 
 ## 📋 프로젝트 개요
 
@@ -25,10 +25,10 @@ VONDI는 청각장애 학생들의 학습 접근성을 높이고 교육 격차�
 
 ## 🛠 기술 스택
 
-- Frontend: [기술 스택 명시]
-- Backend: [기술 스택 명시]
+- Frontend: Streamlit
+- Backend: Python
 - AI/ML: TensorFlow, LSTM
-- API: KT AICC STT, 국립국어원 수어 영상 API
+- API: 국립국어원 수어 영상 API, speech_recognition, OpenAI, nltk
 
 ## 🚀 시작하기
 
@@ -61,18 +61,5 @@ python main.py
    - 학생 1인당 약 160만원 비용 절감
    - 15년간 약 700억원의 예산 절감 예상
 
-## 🤝 기여하기
-
-프로젝트 개선을 위한 제안이나 버그 리포트는 언제나 환영합니다. 이슈를 열거나 풀 리퀘스트를 보내주세요!
-
-## 📄 라이센스
-
-이 프로젝트는 [라이센스 명시](LICENSE) 하에 배포됩니다.
-
-## 📞 연락처
-
-프로젝트 관리자: [이름](mailto:email@example.com)
-
----
 
 VONDI - 모두를 위한 평등한 교육 환경을 만들어갑니다.
