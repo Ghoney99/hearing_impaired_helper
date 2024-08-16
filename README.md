@@ -45,11 +45,11 @@ python main.py
 
 ## 📊 서비스 구성도
 
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F94EMQ%2FbtsI5TYE6dk%2FcTaTNXY6LP7crrTPtnCOjK%2Fimg.png"/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F94EMQ%2FbtsI5TYE6dk%2FcTaTNXY6LP7crrTPtnCOjK%2Fimg.png" alt="서비스구성도" width="800"/>
 
 ## 💻 인프라 구성도
 
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpufO6%2FbtsI5vKmGBI%2FB06CDCfhgGEzlmDl5Ocvjk%2Fimg.png" alt="인프라구성도" width="600"/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpufO6%2FbtsI5vKmGBI%2FB06CDCfhgGEzlmDl5Ocvjk%2Fimg.png" alt="인프라구성도" width="800"/>
 
 ## 📈 기대효과
 
