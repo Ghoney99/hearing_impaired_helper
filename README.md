@@ -40,7 +40,7 @@ git clone https://github.com/Ghoney99/hearing_impaired_helper.git
 pip install -r requirements.txt
 
 # 서비스 실행
-python main.py
+streamlit run app.py
 ```
 
 ## 📊 서비스 구성도
