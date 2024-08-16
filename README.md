@@ -1,6 +1,6 @@
 # VONDI: 청각장애 학생을 위한 AI 디지털교과서 기반 학습 보조 솔루션
 
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdYqpJW%2FbtsI5zeSeDL%2FMCxKkLYZQwwkQvZEtaG65k%2Fimg.png" alt="VONDI 로고" width="300"/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdYqpJW%2FbtsI5zeSeDL%2FMCxKkLYZQwwkQvZEtaG65k%2Fimg.png" alt="VONDI 로고" width="500"/>
 
 ## 📋 프로젝트 개요
 
@@ -45,11 +45,11 @@ python main.py
 
 ## 📊 서비스 구성도
 
-[서비스 구성도 이미지 삽입]
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F94EMQ%2FbtsI5TYE6dk%2FcTaTNXY6LP7crrTPtnCOjK%2Fimg.png"/>
 
 ## 💻 인프라 구성도
 
-[인프라 구성도 이미지 삽입]
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpufO6%2FbtsI5vKmGBI%2FB06CDCfhgGEzlmDl5Ocvjk%2Fimg.png" alt="인프라구성도" width="600"/>
 
 ## 📈 기대효과
 
