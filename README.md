@@ -33,7 +33,7 @@ VONDI는 청각장애 학생들의 학습 접근성을 높이고 교육 격차�
 ## 🛠 기술 스택
 
 - Frontend: Streamlit
-- Backend: Python
+- Backend: ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white)
 - AI/ML: TensorFlow, Keras, LSTM
 - API: 국립국어원 수어 영상 API, speech_recognition, OpenAI, nltk
 
