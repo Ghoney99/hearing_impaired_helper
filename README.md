@@ -32,11 +32,11 @@ VONDI는 청각장애 학생들의 학습 접근성을 높이고 교육 격차�
 
 ## 🛠 기술 스택
 
-- Frontend: ![Streamlit](https://img.shields.io/badge/streamlit-{#FF4B4B}?style=flat-square&logo=Python&logoColor=white)
-- Backend: ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white)
-- AI/ML: ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
-![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white)
-- API: 국립국어원 수어 영상 API, speech_recognition, OpenAI, nltk
+## 🛠 기술 스택
+- Frontend: ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
+- Backend: ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+- AI/ML: ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white) ![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white)
+- API: ![국립국어원](https://img.shields.io/badge/국립국어원%20수어%20영상%20API-003A70?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAEbSURBVHgBjZLNTcNAEIXfrB0UASLhCOQG6QAdxB0kHUAHpAPoADqIUgEpgQ5IB0AFlPfWrKKNs7Hz00jWene/mXl+IgPTNL3jdouHO4ANKvSqqqpVXKy1S2yfsF1gXyMBrzWEjeHjGY8XeMT+A2YYl4UQrZTaIjASrbBFJRKJ6y+YNT6GKprmGMkJdCFwmvsBDWK+9F6A9+yPhbSOtFrAnIEnMZxsDnOeJxJKt2hTiU6PNCdZ9HfIDMxk+wVoLGUqciRgBS66n2HuY9/3R4ppMclElJK9azRGAsz/4mqJ6w0cJO42fE6qrjbWILwYBc5BTH+NQWE5nfZO/R1uDFEU3UsoS+4TI/BG/2M9XGsvWBdQ/PM1zerMMG/t2Y8T2/8AV9FWMuusJ3IAAAAASUVORK5CYII=) ![Speech Recognition](https://img.shields.io/badge/Speech%20Recognition-4285F4?style=for-the-badge&logo=google&logoColor=white) ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white) ![NLTK](https://img.shields.io/badge/NLTK-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
 ## 🚀 시작하기
 
