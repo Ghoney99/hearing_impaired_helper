@@ -31,8 +31,6 @@ VONDI는 청각장애 학생들의 학습 접근성을 높이고 교육 격차�
 - 수어 단어 검색 및 영상 제공
 
 ## 🛠 기술 스택
-
-## 🛠 기술 스택
 - Frontend: ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
 - Backend: ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 - AI/ML: ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white) ![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white)
